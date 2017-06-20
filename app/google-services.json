@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "443640084294-iv0k2qk902c6uv2onup9000re4bkthk9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.skajkut.chatapp",
+            "certificate_hash": "2eec9307a23a2b54c6b6236e7c0a3261f343b96a"
+          }
+        },
+        {
           "client_id": "443640084294-0uj4u5o8lf3a5nlm4f1oje03qbinqvkn.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443640084294-0uj4u5o8lf3a5nlm4f1oje03qbinqvkn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
