@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "443640084294",
+    "firebase_url": "https://chatapp-f795c.firebaseio.com",
+    "project_id": "chatapp-f795c",
+    "storage_bucket": "chatapp-f795c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443640084294:android:d965aeefea64ab8e",
+        "android_client_info": {
+          "package_name": "com.example.skajkut.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443640084294-0uj4u5o8lf3a5nlm4f1oje03qbinqvkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3q2OSa9OlJknnGi7zWfqmtupIYR7cLpI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
