@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.util.GenerateData;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,6 +27,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,8 +40,10 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseReference;
+    private FirebaseDatabase mFirebaseDatabase;
 
-    SignInButton googleSignInButton;
+    SignInButton googleButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,15 +63,17 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
                 .build();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
-        googleSignInButton = (SignInButton) findViewById(R.id.btn_googleSignIn);
+        googleButton = (SignInButton) findViewById(R.id.btn_googleSignIn);
 
-        googleSignInButton.setOnClickListener(new View.OnClickListener() {
+        googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signInWithGoogle();
             }
         });
+
 
     }
 
@@ -100,12 +107,31 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
 
                         if (task.isSuccessful()){
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
+                            // TODO Proveriti jel smo ga vec dodali u bazu
+                            addUser(user);
                             Toast.makeText(LoginActivity.this, "Login successful: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void addUser(FirebaseUser firebaseUser){
+
+        String id = firebaseUser.getUid();
+        String name = firebaseUser.getDisplayName();
+        String email = firebaseUser.getEmail();
+
+        String[] nameValues = name.split(" ");
+        String firstName = nameValues[0];
+        String lastName = nameValues[1];
+
+        User user = new User(id, firstName, lastName, email);
+
+        mDatabaseReference = mFirebaseDatabase.getReference("users");
+        mDatabaseReference.child(id).setValue(user);
+
     }
 
 
