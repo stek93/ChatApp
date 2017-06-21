@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.data.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +14,11 @@ public class User {
 
     private String mFirstname;
     private String mLastname;
+    @Exclude
     private String mUsername;
     private String mPassword;
 
+    @Exclude
     private FriendList mFriendList;
     private List<Conversation> mConversationList;
 
