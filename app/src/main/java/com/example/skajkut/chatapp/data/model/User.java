@@ -20,6 +20,7 @@ public class User {
     private String lastname;
     private String username;
     private String password;
+    private String email;
 
     @Exclude
     private List<Conversation> conversationList;
@@ -102,4 +103,11 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

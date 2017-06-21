@@ -1,4 +1,8 @@
 <resources>
+    <!--Facebook API-->
+        <string name="facebook_app_id">676448619218928</string>
+        <string name="fb_login_protocol_scheme">fb676448619218928</string>
+    <!--============-->
     <string name="app_name">ChatApp</string>
     <string name="username">username</string>
     <string name="login">Login</string>
