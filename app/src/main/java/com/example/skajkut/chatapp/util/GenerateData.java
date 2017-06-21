@@ -4,6 +4,8 @@ import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Map;
+
 /**
  * Created by Stefan Kajkut on 6/20/2017.
  * Contact me on stefan.kajkutsf@gmail.com.
@@ -58,8 +60,22 @@ public final class GenerateData {
         user3.setFriendList(friendList3);*/
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("users").child(user1.getUsername()).setValue(user1);
-        mDatabase.child("users").child(user2.getUsername()).setValue(user2);
-        mDatabase.child("users").child(user3.getUsername()).setValue(user3);
+        //user1.setId(mDatabase.push().getKey());
+        String user1ID = mDatabase.push().getKey();
+        String user2ID = mDatabase.push().getKey();
+        String user3ID = mDatabase.push().getKey();
+
+        user1.getFriendList().put(user2ID, user2.getUsername());
+        user1.getFriendList().put(user3ID, user3.getUsername());
+
+        user2.getFriendList().put(user1ID, user1.getUsername());
+        user3.getFriendList().put(user1ID, user1.getUsername());
+        //mDatabase.setValue("users");
+        mDatabase.child("users").child(user1ID).setValue(user1);
+        for(Map.Entry<String, String> user : user1.getFriendList().entrySet()) {
+            mDatabase.child("friendlist").child(user1ID).child(user.getKey()).setValue(user.getValue());
+        }
+        mDatabase.child("users").child(user2ID).setValue(user2);
+        mDatabase.child("users").child(user3ID).setValue(user3);
     }
 }

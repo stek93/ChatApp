@@ -28,18 +28,18 @@ public class Conversation {
     }
 
     public Set<User> getUsers() {
-        return users;
+        return this.users;
     }
 
     public void setUsers(Set<User> users) {
-        users = users;
+        this.users = users;
     }
 
     public List<Message> getMessageList() {
-        return messageList;
+        return this.messageList;
     }
 
     public void setMessageList(List<Message> messageList) {
-        messageList = messageList;
+        this.messageList = messageList;
     }
 }

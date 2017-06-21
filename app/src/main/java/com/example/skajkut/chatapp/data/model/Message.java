@@ -26,26 +26,26 @@ public class Message {
     }
 
     public String getText() {
-        return text;
+        return this.text;
     }
 
     public void setText(String text) {
-        text = text;
+        this.text = text;
     }
 
     public Date getDateTime() {
-        return dateTime;
+        return this.dateTime;
     }
 
     public void setDateTime(Date dateTime) {
-        dateTime = dateTime;
+        this.dateTime = dateTime;
     }
 
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     public void setUser(User user) {
-        user = user;
+        this.user = user;
     }
 }

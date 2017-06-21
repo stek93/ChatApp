@@ -1,35 +1,27 @@
 {
   "project_info": {
-    "project_number": "443640084294",
-    "firebase_url": "https://chatapp-f795c.firebaseio.com",
-    "project_id": "chatapp-f795c",
-    "storage_bucket": "chatapp-f795c.appspot.com"
+    "project_number": "389594338385",
+    "firebase_url": "https://chatapplication-3a5d5.firebaseio.com",
+    "project_id": "chatapplication-3a5d5",
+    "storage_bucket": "chatapplication-3a5d5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443640084294:android:d965aeefea64ab8e",
+        "mobilesdk_app_id": "1:389594338385:android:d965aeefea64ab8e",
         "android_client_info": {
           "package_name": "com.example.skajkut.chatapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443640084294-iv0k2qk902c6uv2onup9000re4bkthk9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.skajkut.chatapp",
-            "certificate_hash": "2eec9307a23a2b54c6b6236e7c0a3261f343b96a"
-          }
-        },
-        {
-          "client_id": "443640084294-0uj4u5o8lf3a5nlm4f1oje03qbinqvkn.apps.googleusercontent.com",
+          "client_id": "389594338385-980qlsck30g2e1qv8g4kekauo7q7tegr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC3q2OSa9OlJknnGi7zWfqmtupIYR7cLpI"
+          "current_key": "AIzaSyCr8PrnUCBJTBiftb_11EarsF2aCnBxK3I"
         }
       ],
       "services": {
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "443640084294-0uj4u5o8lf3a5nlm4f1oje03qbinqvkn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
