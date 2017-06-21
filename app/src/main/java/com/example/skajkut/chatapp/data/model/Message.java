@@ -9,43 +9,43 @@ import java.util.Date;
 
 public class Message {
 
-    private String mText;
-    private Date mDateTime;
-    private User mUser;
+    private String text;
+    private Date dateTime;
+    private User user;
 
     public Message() {
         super();
-        this.mDateTime = new Date();
+        this.dateTime = new Date();
     }
 
     public Message(String text, Date dateTime, User user) {
         super();
-        this.mText = text;
-        this.mDateTime = dateTime;
-        this.mUser = user;
+        this.text = text;
+        this.dateTime = dateTime;
+        this.user = user;
     }
 
     public String getText() {
-        return mText;
+        return text;
     }
 
     public void setText(String text) {
-        mText = text;
+        text = text;
     }
 
     public Date getDateTime() {
-        return mDateTime;
+        return dateTime;
     }
 
     public void setDateTime(Date dateTime) {
-        mDateTime = dateTime;
+        dateTime = dateTime;
     }
 
     public User getUser() {
-        return mUser;
+        return user;
     }
 
     public void setUser(User user) {
-        mUser = user;
+        user = user;
     }
 }

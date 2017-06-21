@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.data.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,76 +12,78 @@ import java.util.List;
 
 public class User {
 
-    private String mFirstname;
-    private String mLastname;
-    private String mUsername;
-    private String mPassword;
+    private String firstname;
+    private String lastname;
+    private String username;
+    private String password;
 
-    private FriendList mFriendList;
-    private List<Conversation> mConversationList;
+    private List<String> friendList;
+
+    @Exclude
+    private List<Conversation> conversationList;
 
     public User() {
         super();
-        this.mConversationList = new ArrayList<>();
+        this.conversationList = new ArrayList<>();
     }
 
-    public User(FriendList friendList, List<Conversation> conversations,
+    public User(List<String> friendList, List<Conversation> conversations,
                 String firstname, String lastname, String username,
                 String password) {
         super();
-        this.mFriendList = friendList;
-        this.mConversationList = conversations;
-        this.mFirstname = firstname;
-        this.mLastname = lastname;
-        this.mUsername = username;
-        this.mPassword = password;
+        this.friendList = friendList;
+        this.conversationList = conversations;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
     }
 
-    public FriendList getFriendList() {
-        return mFriendList;
+    public List<String> getFriendList() {
+        return friendList;
     }
 
-    public void setFriendList(FriendList friendList) {
-        mFriendList = friendList;
+    public void setFriendList(List<String> friendList) {
+        friendList = friendList;
     }
 
     public List<Conversation> getConversationList() {
-        return mConversationList;
+        return conversationList;
     }
 
     public void setConversationList(List<Conversation> conversationList) {
-        mConversationList = conversationList;
+        conversationList = conversationList;
     }
 
     public String getFirstname() {
-        return mFirstname;
+        return firstname;
     }
 
     public void setFirstname(String firstname) {
-        mFirstname = firstname;
+        firstname = firstname;
     }
 
     public String getLastname() {
-        return mLastname;
+        return lastname;
     }
 
     public void setLastname(String lastname) {
-        mLastname = lastname;
+        lastname = lastname;
     }
 
     public String getUsername() {
-        return mUsername;
+        return username;
     }
 
     public void setUsername(String username) {
-        mUsername = username;
+        username = username;
     }
 
     public String getPassword() {
-        return mPassword;
+        return password;
     }
 
     public void setPassword(String password) {
-        mPassword = password;
+        password = password;
     }
 }

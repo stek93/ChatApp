@@ -1,6 +1,5 @@
 package com.example.skajkut.chatapp.util;
 
-import com.example.skajkut.chatapp.data.model.FriendList;
 import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,7 +45,7 @@ public final class GenerateData {
         user3.setUsername("djoks");
         user3.setPassword("123");
 
-        FriendList friendList1 = new FriendList();
+        /*FriendList friendList1 = new FriendList();
         friendList1.getFriends().put(user2.getUsername(), user2);
         user1.setFriendList(friendList1);
 
@@ -56,7 +55,7 @@ public final class GenerateData {
 
         FriendList friendList3 = new FriendList();
         friendList3.getFriends().put(user1.getUsername(), user1);
-        user3.setFriendList(friendList3);
+        user3.setFriendList(friendList3);*/
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(user1.getUsername()).setValue(user1);
