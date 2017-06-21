@@ -12,34 +12,34 @@ import java.util.Set;
 
 public class Conversation {
 
-    private Set<User> mUsers;
-    private List<Message> mMessageList;
+    private Set<User> users;
+    private List<Message> messageList;
 
     public Conversation() {
         super();
-        this.mUsers = new HashSet<>();
-        this.mMessageList = new ArrayList<>();
+        this.users = new HashSet<>();
+        this.messageList = new ArrayList<>();
     }
 
     public Conversation(Set<User> users, List<Message> messages) {
         super();
-        this.mUsers = users;
-        this.mMessageList = messages;
+        this.users = users;
+        this.messageList = messages;
     }
 
     public Set<User> getUsers() {
-        return mUsers;
+        return users;
     }
 
     public void setUsers(Set<User> users) {
-        mUsers = users;
+        users = users;
     }
 
     public List<Message> getMessageList() {
-        return mMessageList;
+        return messageList;
     }
 
     public void setMessageList(List<Message> messageList) {
-        mMessageList = messageList;
+        messageList = messageList;
     }
 }
