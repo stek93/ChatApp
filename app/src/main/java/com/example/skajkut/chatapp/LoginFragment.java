@@ -163,7 +163,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
 
                             addUser(user);
-                            Toast.makeText(getActivity(), "Login successful: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getActivity(), MainActivity.class));
                         }else{
                             Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
                         }
