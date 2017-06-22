@@ -170,7 +170,8 @@ public class EmailLoginFragment extends Fragment {
                 .getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
         String email = preferences.getString("email", null);
         if(email == null) {
-            Query query = databaseReference.child("email");
+            databaseReference = firebaseDatabase.getReference("users");
+            Query query = databaseReference.orderByChild("email");
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
