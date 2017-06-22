@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<android.support.v7.widget.CardView android:id="@+id/cw_friend"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cw_friend"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/cardview_friend_height"
-        android:layout_margin="@dimen/margin_card_view"
-        app:cardElevation="@dimen/cardview_default_elevation">
+    android:layout_height="@dimen/cardview_friend_height"
+    android:layout_margin="@dimen/margin_card_view"
+    app:cardElevation="@dimen/cardview_default_elevation"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -23,34 +18,33 @@
                 android:layout_margin="8dp"
                 android:background="#9e4e4e"/>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@id/iv_cw_userImage"
-                    android:layout_margin="8dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/iv_cw_userImage"
+                android:layout_toEndOf="@id/iv_cw_userImage"
+                android:layout_margin="8dp">
 
-                    <TextView
-                        android:id="@+id/tv_cw_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="nikola95"
-                        android:textSize="16sp"
-                        android:textColor="#3b3b3b"/>
+                <TextView
+                    android:id="@+id/tv_cw_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="nikola95"
+                    android:textSize="16sp"
+                    android:textColor="#3b3b3b"/>
 
-                    <TextView
-                        android:id="@+id/tv_cw_fullname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Nikola Sofronovic"
-                        android:layout_below="@id/tv_cw_username"
-                        android:textSize="16sp"
-                        android:textColor="#a1a1a1"/>
+                <TextView
+                    android:id="@+id/tv_cw_fullname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nikola Sofronovic"
+                    android:layout_below="@id/tv_cw_username"
+                    android:textSize="16sp"
+                    android:textColor="#a1a1a1"/>
 
-                </RelativeLayout>
+            </RelativeLayout>
 
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>
