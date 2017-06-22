@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity   {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         //mCallbackManager = CallbackManager.Factory.create();
-        GenerateData.getInstance().generateRandomData();
+        //GenerateData.getInstance().generateRandomData();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
             /**/

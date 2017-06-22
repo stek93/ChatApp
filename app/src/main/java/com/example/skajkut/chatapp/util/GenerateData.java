@@ -40,6 +40,7 @@ public final class GenerateData {
         user2.setLastname("Sofronovic");
         user2.setUsername("nikola");
         user2.setPassword("123");
+        user2.setId("PBVN0k54vZe4MOk2DpXEOPlgvHI3");
 
         User user3 = new User();
         user3.setFirstname("Djordje");
@@ -62,20 +63,20 @@ public final class GenerateData {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         //user1.setId(mDatabase.push().getKey());
         String user1ID = mDatabase.push().getKey();
-        String user2ID = mDatabase.push().getKey();
+        //String user2ID = mDatabase.push().getKey();
         String user3ID = mDatabase.push().getKey();
 
-        user1.getFriendList().put(user2ID, user2.getUsername());
-        user1.getFriendList().put(user3ID, user3.getUsername());
-
         user2.getFriendList().put(user1ID, user1.getUsername());
-        user3.getFriendList().put(user1ID, user1.getUsername());
+        user2.getFriendList().put(user3ID, user3.getUsername());
+/*
+        user2.getFriendList().put(user1ID, user1.getUsername());
+        user3.getFriendList().put(user1ID, user1.getUsername());*/
         //mDatabase.setValue("users");
-        mDatabase.child("users").child(user1ID).setValue(user1);
-        for(Map.Entry<String, String> user : user1.getFriendList().entrySet()) {
-            mDatabase.child("friendlist").child(user1ID).child(user.getKey()).setValue(user.getValue());
+        //mDatabase.child("users").child(user1ID).setValue(user1);
+        for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
+            mDatabase.child("friendlist").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
-        mDatabase.child("users").child(user2ID).setValue(user2);
+        mDatabase.child("users").child(user1ID).setValue(user1);
         mDatabase.child("users").child(user3ID).setValue(user3);
     }
 }

@@ -57,12 +57,11 @@ public class User {
         this.email = email;
     }
 
-    @Exclude
+
     public String getId() {
         return this.id;
     }
 
-    @Exclude
     public void setId(String id) {
         this.id = id;
     }
@@ -123,5 +122,19 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", conversationList=" + conversationList +
+                ", friendList=" + friendList +
+                '}';
     }
 }
