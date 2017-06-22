@@ -47,7 +47,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
 
     @BindView(R.id.btn_facebook) LoginButton mFacebookButton;
-    @BindView(R.id.btn_google) SignInButton mGoogleButton;
     private CallbackManager mCallbackManager;
 
     private GoogleApiClient mGoogleApiClient;

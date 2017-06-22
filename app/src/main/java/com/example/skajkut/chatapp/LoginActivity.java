@@ -1,6 +1,7 @@
 package com.example.skajkut.chatapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -170,7 +171,7 @@ public class LoginActivity extends AppCompatActivity   {
                         if (task.isSuccessful()){
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
                             // TODO Proveriti jel smo ga vec dodali u bazu
-                            addUser(user);
+                                addUser(user);
                             Toast.makeText(LoginActivity.this, "Login successful: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
