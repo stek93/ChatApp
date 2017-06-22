@@ -120,6 +120,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(getActivity(), "Success!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
 
             @Override
@@ -137,7 +138,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     @Override
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
