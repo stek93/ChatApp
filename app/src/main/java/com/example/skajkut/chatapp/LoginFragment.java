@@ -1,6 +1,8 @@
 package com.example.skajkut.chatapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,6 +59,8 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
+
+    private static final String USER_SP = "user.sp";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -157,7 +160,7 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
                         if (task.isSuccessful()){
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
-                            // TODO Proveriti jel smo ga vec dodali u bazu
+
                             addUser(user);
                             Toast.makeText(getActivity(), "Login successful: " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                         }else{
@@ -182,7 +185,19 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
         mDatabaseReference = mFirebaseDatabase.getReference("users");
         mDatabaseReference.child(id).setValue(user);
 
+        addUserToSharedPref(id, firstName, lastName, email);
+
     }
+
+    private void addUserToSharedPref(String id, String firstName, String lastName, String email){
+        SharedPreferences.Editor editor = this.getActivity().getSharedPreferences(USER_SP, Context.MODE_PRIVATE).edit();
+        editor.putString("id", id);
+        editor.putString("firstname", firstName);
+        editor.putString("lastname", lastName);
+        editor.putString("email", email);
+        editor.apply();
+    }
+
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -78,6 +78,11 @@ public class EmailLoginFragment extends Fragment {
         registratLayout.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.btn_closeRegistration)
+    public void onRegisterClose(){
+        loginLayout.setVisibility(View.VISIBLE);
+        registratLayout.setVisibility(View.GONE);
+    }
 
     @OnClick(R.id.btn_submitRegistration)
     public void registration(){
