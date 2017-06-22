@@ -49,6 +49,14 @@ public class User {
         this.email = email;
     }
 
+    public User(String firstname, String lastname, String username, String password, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
     @Exclude
     public String getId() {
         return this.id;

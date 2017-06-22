@@ -8,4 +8,9 @@
     <string name="login">Login</string>
     <string name="password">password</string>
     <string name="signInWithEmail">Login with email</string>
+    <string name="register">Register</string>
+    <string name="firstname">firstname</string>
+    <string name="lastname">lastname</string>
+    <string name="email">email</string>
+    <string name="submit">Submit</string>
 </resources>
