@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -52,19 +54,15 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 
-public class LoginActivity extends AppCompatActivity  implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity   {
 
-    private static final int RC_SIGN_IN = 9001;
 
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseReference;
     private FirebaseDatabase mFirebaseDatabase;
 
     SignInButton googleButton;
 
-    private LoginButton mFacebook;
-    private CallbackManager mCallbackManager;
     private FirebaseAuth mFirebaseAuth;
 
     @Override
@@ -73,11 +71,14 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
         setContentView(R.layout.activity_login);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        mCallbackManager = CallbackManager.Factory.create();
+        //mCallbackManager = CallbackManager.Factory.create();
         GenerateData.getInstance().generateRandomData();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
-        mFacebook= (LoginButton) findViewById(R.id.login_button);
+            /**/
+
+
+        /*mFacebook= (LoginButton) findViewById(R.id.login_button);
         mFacebook.setReadPermissions("email", "public_profile");
         LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -99,7 +100,17 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
                 Log.d("STEK", error.toString());
                 error.printStackTrace();
             }
-        });
+        });*/
+
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragment_login);
+
+        if(fragment == null) {
+            fragment = new LoginFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_login, fragment)
+                    .commit();
+        }
     }
 
     private void handleFacebookAccessToken(AccessToken accessToken) {
@@ -123,47 +134,19 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
     }
 
-    @Override
+
+    /*private void signInWithGoogle(){
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(intent, RC_SIGN_IN);
+    }*/
+
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-
-        //GenerateData.getInstance().generateRandomData();
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-
-        googleButton = (SignInButton) findViewById(R.id.btn_googleSignIn);
-
-        googleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signInWithGoogle();
-            }
-        });
-
-
-    }
-
-    private void signInWithGoogle(){
-        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(intent, RC_SIGN_IN);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_login);
+        fragment.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -174,9 +157,9 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
                 Toast.makeText(this, "Sign in failed", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+    }*/
 
-    private void authWithGoogle(GoogleSignInAccount account){
+    /*private void authWithGoogle(GoogleSignInAccount account){
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
@@ -194,31 +177,11 @@ public class LoginActivity extends AppCompatActivity  implements GoogleApiClient
                         }
                     }
                 });
-    }
-
-    private void addUser(FirebaseUser firebaseUser){
-
-        String id = firebaseUser.getUid();
-        String name = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
-
-        String[] nameValues = name.split(" ");
-        String firstName = nameValues[0];
-        String lastName = nameValues[1];
-
-        User user = new User(id, firstName, lastName, email);
-
-        mDatabaseReference = mFirebaseDatabase.getReference("users");
-        mDatabaseReference.child(id).setValue(user);
-
-    }
+    }*/
 
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
 
-    }
+
 
 
 }
