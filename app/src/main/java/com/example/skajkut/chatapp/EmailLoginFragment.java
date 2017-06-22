@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,10 +23,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
-import java.nio.channels.FileChannel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +41,7 @@ import butterknife.OnClick;
 
 public class EmailLoginFragment extends Fragment {
 
-    private FirebaseUser firebaseUser;
+    private FirebaseUser mFirebaseUser;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -50,6 +56,9 @@ public class EmailLoginFragment extends Fragment {
     @BindView(R.id.et_username) TextInputEditText usernameEditText;
     @BindView(R.id.et_password) TextInputEditText passwordEditText;
     @BindView(R.id.et_email) TextInputEditText emailEditText;
+    @BindView(R.id.btn_login) Button loginButton;
+    @BindView(R.id.email) EditText emailLogin;
+    @BindView(R.id.password) EditText passwordLogin;
 
     @Nullable
     @Override
@@ -125,5 +134,50 @@ public class EmailLoginFragment extends Fragment {
         editor.putString("email", email);
         editor.apply();
 
+    }
+
+    @OnClick(R.id.btn_login)
+    public void login() {
+        final String email = emailLogin.getText().toString();
+        final String password = passwordLogin.getText().toString();
+
+        if(email.length() == 0) {
+            emailLogin.setError("Email is required!");
+        } else if(password.length() == 0) {
+            passwordLogin.setError("Password is required");
+        }
+
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Login failed!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            checkSharedPref(email);
+                        }
+                    }
+                });
+    }
+
+    private void checkSharedPref(String emailStr) {
+        SharedPreferences preferences = getActivity()
+                .getSharedPreferences(USER_PREF, Context.MODE_PRIVATE);
+        String email = preferences.getString("email", null);
+        if(email == null) {
+            Query query = databaseReference.child("email");
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = dataSnapshot.getValue(User.class);
+                    Log.d("STEK", user.getEmail() + user.getFirstname());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    // ...
+                }
+            });
+        }
     }
 }

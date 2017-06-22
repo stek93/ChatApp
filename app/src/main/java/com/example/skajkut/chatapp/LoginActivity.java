@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -112,6 +113,29 @@ public class LoginActivity extends AppCompatActivity   {
                     .add(R.id.fragment_login, fragment)
                     .commit();
         }
+    }
+
+    public void handleFragment(LoginFragment lf) {
+        FragmentManager fm = getSupportFragmentManager();
+        /*Fragment fragment = fm.findFragmentById(R.id.fragment_login);
+
+        if(fragment == null) {
+            fragment = new LoginFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_login, fragment)
+                    .commit();
+        }*/
+        FragmentTransaction transaction = fm.beginTransaction();
+        EmailLoginFragment fragment = new EmailLoginFragment();
+        //
+        transaction.addToBackStack(null)
+        .hide(lf)
+        .add(R.id.fragment_login, fragment)
+        .commit();
+/*        fm.beginTransaction()
+                .replace(R.id.fragment_login, new EmailLoginFragment())
+                .addToBackStack(null)
+                .commit();*/
     }
 
     private void handleFacebookAccessToken(AccessToken accessToken) {

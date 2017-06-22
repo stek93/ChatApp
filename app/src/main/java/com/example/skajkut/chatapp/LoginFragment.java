@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.skajkut.chatapp.data.model.User;
@@ -47,6 +50,8 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
 
     @BindView(R.id.btn_facebook) LoginButton mFacebookButton;
+    @BindView(R.id.email_login)
+    Button mLoginButton;
     private CallbackManager mCallbackManager;
 
     private GoogleApiClient mGoogleApiClient;
@@ -92,6 +97,12 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
     @OnClick(R.id.btn_google)
     public void onGoogleButtonClick(){
         signInWithGoogle();
+    }
+
+    @OnClick(R.id.email_login)
+    public void onButtonClicked() {
+        LoginActivity activity = (LoginActivity) getActivity();
+        activity.handleFragment(this);
     }
 
     private void signInWithGoogle(){
