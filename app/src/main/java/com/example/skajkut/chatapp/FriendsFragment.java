@@ -109,9 +109,19 @@ public class FriendsFragment extends Fragment {
 
                     for (String key : usersKeys){
 
+                        for (User user : users){
+
+                            if (user.getId().equals(key)){
+                                friendList.add(user);
+                            }
+                        }
                     }
+                    setAdapter();
 
                 }
+
+                printUser();
+                setAdapter();
             }
 
             @Override
@@ -132,7 +142,7 @@ public class FriendsFragment extends Fragment {
     }
 
     private void setAdapter() {
-        mFriendsAdapter = new FriendsAdapter(getActivity(), users);
+        mFriendsAdapter = new FriendsAdapter(getActivity(), friendList);
         mRecyclerView.setAdapter(mFriendsAdapter);
     }
 
