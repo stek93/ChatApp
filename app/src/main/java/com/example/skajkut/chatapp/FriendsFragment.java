@@ -65,80 +65,9 @@ public class FriendsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        getUsersKeys();
+        //getUsersKeys();
 
         return view;
-    }
-
-
-    private void getUsersKeys(){
-
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabaseReference = mFirebaseDatabase.getReference("friendlist");
-
-        mDatabaseReference.keepSynced(true);
-
-        Query query = mDatabaseReference.child(mFirebaseUser.getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    usersKeys.add(snapshot.getKey());
-
-                }
-            printUser();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void findFriends(){
-
-        mDatabaseReference = mFirebaseDatabase.getReference("users");
-        mDatabaseReference.keepSynced(true);
-        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    User u = s.getValue(User.class);
-                    users.add(u);
-
-                    for (String key : usersKeys){
-
-                        for (User user : users){
-
-                            if (user.getId().equals(key)){
-                                friendList.add(user);
-                            }
-                        }
-                    }
-                    setAdapter();
-
-                }
-
-                printUser();
-                setAdapter();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void printUser(){
-        for (String i : usersKeys){
-            System.out.println("USER KEYS: " + i);
-        }
-
-        for (User i : friendList){
-            System.out.println("Users: " + i);
-        }
     }
 
     private void setAdapter() {
