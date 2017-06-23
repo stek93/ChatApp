@@ -140,14 +140,21 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == RC_SIGN_IN){
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result.isSuccess()){
-                GoogleSignInAccount gAccount = result.getSignInAccount();
-                authWithGoogle(gAccount);
-            }else {
-                Toast.makeText(getActivity(), "Sign in failed", Toast.LENGTH_SHORT).show();
+        try {
+            if (requestCode == RC_SIGN_IN) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                if (result.isSuccess()) {
+                    GoogleSignInAccount gAccount = result.getSignInAccount();
+                    authWithGoogle(gAccount);
+                } else {
+                    Toast.makeText(getActivity(), "Sign in failed", Toast.LENGTH_SHORT).show();
+                    result.getStatus();
+                    System.out.println("Google status :" + result.getStatus());
+
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -163,9 +170,11 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
 
                             addUser(user);
+                            Toast.makeText(getActivity(), user.getDisplayName(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getActivity(), MainActivity.class));
                         }else{
                             Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
+                            task.getException();
                         }
                     }
                 });

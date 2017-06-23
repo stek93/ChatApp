@@ -4,7 +4,9 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stefan Kajkut on 6/20/2017.
@@ -22,12 +24,14 @@ public class User {
 
     @Exclude
     private List<Conversation> conversationList;
-    private List<User> friendList;
+    private Map<String, String> friendList;
+    private Map<String, String> favoriteList;
 
     public User() {
         super();
-        this.friendList = new ArrayList<>();
+        this.friendList = new HashMap<>();
         this.conversationList = new ArrayList<>();
+        this.favoriteList = new HashMap<>();
     }
 
     public User(String firstname, String lastname, String username,
@@ -67,12 +71,12 @@ public class User {
     }
 
     @Exclude
-    public List<User> getFriendList() {
+    public Map<String, String> getFriendList() {
         return this.friendList;
     }
 
     @Exclude
-    public void setFriendList(List<User> friendList) {
+    public void setFriendList(Map<String, String> friendList) {
         this.friendList = friendList;
     }
 
@@ -122,6 +126,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Map<String, String> getFavoriteList() {
+        return this.favoriteList;
+    }
+
+    public void setFavoriteList(Map<String, String> favoriteList) {
+        this.favoriteList = favoriteList;
     }
 
     @Override

@@ -65,15 +65,19 @@ public class FriendsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        getUsersKeys();
+        getFriends();
 
-
+        getFavoriteFriends();
 
         return view;
     }
 
 
-    private void getUsersKeys(){
+    private void getFavoriteFriends(){
+
+    }
+
+    private void getFriends(){
 
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabaseReference = mFirebaseDatabase

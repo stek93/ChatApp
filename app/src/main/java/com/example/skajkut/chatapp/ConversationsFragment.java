@@ -56,11 +56,11 @@ public class ConversationsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab_chats, container, false);
 
-        ButterKnife.bind(mContext, view);
+//        ButterKnife.bind(mContext, view);
 
-        mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+//        mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
-        updateUI();
+//        updateUI();
 
         return view;
     }
@@ -123,7 +123,9 @@ public class ConversationsFragment extends Fragment {
             mConversation = conversation;
             //TODO
             mTitleMessage.setText("TITLE");
+/*
             Log.d("STEK", conversation.getUsers().get(0).getFirstname());
+*/
         }
     }
 

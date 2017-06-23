@@ -158,6 +158,7 @@ public class EmailLoginFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()) {
                             Toast.makeText(getActivity(), "Login failed!", Toast.LENGTH_SHORT).show();
+                            System.out.println(task.getException());
                         } else {
                             checkSharedPref(email);
                         }

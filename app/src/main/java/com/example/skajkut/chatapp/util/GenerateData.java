@@ -39,15 +39,14 @@ public final class GenerateData {
         user1.setLastname("Kajkut");
         user1.setUsername("stek");
         user1.setPassword("123");
-        user1.setId("-KnIiEneW8DHOqdWGoUC");
+
 
         User user2 = new User();
-        user2.setId("PBVN0k54vZe4MOk2DpXEOPlgvHI3");
         user2.setFirstname("Nikola");
         user2.setLastname("Sofronovic");
         user2.setUsername("nikola");
         user2.setPassword("123");
-        user2.setId("PBVN0k54vZe4MOk2DpXEOPlgvHI3");
+        user2.setId("fhj3hIqnOkQHgTEkpnVfzj2lQRQ2");
 
         User user3 = new User();
         user3.setId("-KnIiEnhsL4W8944e5xq");
@@ -55,8 +54,8 @@ public final class GenerateData {
         user3.setLastname("Djolenece");
         user3.setUsername("djoks");
         user3.setPassword("123");
-
-/*        Conversation c1 = new Conversation();
+/*
+        Conversation c1 = new Conversation();
         c1.getUsers().put(user1.getId(), user1.getUsername());
         c1.getUsers().put(user2.getId(), user2.getUsername());
 
@@ -73,45 +72,44 @@ public final class GenerateData {
         c1.getMessageList().add(m1);
         c1.getMessageList().add(m2);*/
 
-  /*      FriendList friendList1 = new FriendList();
-        friendList1.getFriends().put(user2.getUsername(), user2);
-        user1.setFriendList(friendList1);*/
-/*
-        FriendList friendList2 = new FriendList();
-        friendList2.getFriends().put(user3.getUsername(), user3);
-        user2.setFriendList(friendList2);
-
-        FriendList friendList3 = new FriendList();
-        friendList3.getFriends().put(user1.getUsername(), user1);
-        user3.setFriendList(friendList3);*/
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+/*
 
-        //mDatabase.child("conversations").setValue(c1);
+        String c_id = mDatabase.push().getKey();
+        mDatabase.child("conversations").child(c_id).setValue(c1);*/
 
         //user1.setId(mDatabase.push().getKey());
-        //      String user1ID = mDatabase.push().getKey();
+        //String user1ID = mDatabase.push().getKey();
         //String user2ID = mDatabase.push().getKey();
-//        String user3ID = mDatabase.push().getKey();
+        //String user3ID = mDatabase.push().getKey();
 
-        //user2.getFriendList().put(user1ID, user1.getUsername());
-        //user2.getFriendList().put(user3ID, user3.getUsername());
+        user2.getFriendList().put(user1.getId(), user1.getUsername());
+        user2.getFriendList().put(user3.getId(), user3.getUsername());
 
-        user1.getFriendList().add(user2);
-        user1.getFriendList().add(user3);
+
+        user2.getFavoriteList().put(user1.getId(), user1.getUsername());
+        user2.getFavoriteList().put(user3.getId(), user3.getUsername());
         //mDatabase.setValue("users");
+
+
+
         //mDatabase.child("users").child(user1ID).setValue(user1);
-        //for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
-          //  mDatabase.child("friendlist").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
-        /*for (User i : user1.getFriendList()) {
-             mDatabase.child("friendlist").child(user1.getId()).child(i.getId()).setValue(i);
-        }*/
-
-        //mDatabase.child("friendlist").child(user1.getId()).setValue(user1.getFriendList());
-
+        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
+            mDatabase.child("favoritefriends").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
+/*        for (User i : user2.getFriendList()) {
+             mDatabase.child("friendlist").child(user2.getId()).child(i.getId()).setValue(i);
+        }
+*/
+       /* for (User i : user2.getFavoriteList()){
+            mDatabase.child("favoritefriends").child(user2.getId()).child(i.getId()).setValue(i);
+        }*/
+/*
+        mDatabase.child("users").child(user1.getId()).setValue(user1);
+        mDatabase.child("users").child(user2.getId()).setValue(user2);
+        mDatabase.child("users").child(user3.getId()).setValue(user3);*/
 
-        //mDatabase.child("users").child(user1ID).setValue(user1);
-       // mDatabase.child("users").child(user3ID).setValue(user3);
-  //  }
+        //  }
+    }
 }

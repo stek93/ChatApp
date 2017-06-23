@@ -1,8 +1,10 @@
 package com.example.skajkut.chatapp.data.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Stefan Kajkut on 6/20/2017.
@@ -11,26 +13,26 @@ import java.util.List;
 
 public class Conversation {
 
-    private List<User> users;
+    private Map<String, String> users;
     private List<Message> messageList;
 
     public Conversation() {
         super();
-        this.users = new ArrayList<>();
+        this.users = new HashMap<>();
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(List<User> users, List<Message> messages) {
+    public Conversation(Map<String, String> users, List<Message> messages) {
         super();
         this.users = users;
         this.messageList = messages;
     }
 
-    public List<User> getUsers() {
+    public Map<String, String> getUsers() {
         return this.users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Map<String, String> users) {
         this.users = users;
     }
 
