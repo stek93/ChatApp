@@ -58,7 +58,8 @@ public class ConversationsFragment extends Fragment {
 
         ButterKnife.bind(mContext, view);
 
-        mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        //mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mConversationRecyclerView = (RecyclerView) view.findViewById(R.id.rw_coneversation_list);
 
         updateUI();
 
@@ -69,15 +70,13 @@ public class ConversationsFragment extends Fragment {
         mConversationList = new ArrayList<>();
         setupFirebase();
 
-        final DatabaseReference databaseReferenceOutter = mFirebaseDatabase
-                .getReference("conversations").child("users");
-        Query query = databaseReferenceOutter.orderByKey()
-                .equalTo(mFirebaseAuth.getCurrentUser().getUid());
-        query.addValueEventListener(new ValueEventListener() {
+        DatabaseReference db1 = mFirebaseDatabase.getReference("conversations");
+        db1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    System.out.println(databaseReferenceOutter.getParent().getKey());
+                for (DataSnapshot snap : dataSnapshot.getChildren()){
+
+                    DatabaseReference db2 = mFirebaseDatabase.getReference("users");
                 }
             }
 
@@ -87,7 +86,7 @@ public class ConversationsFragment extends Fragment {
             }
         });
 
-        mAdapter = new ConversationAdapter(query, null, null);
+        mAdapter = new ConversationAdapter(null, null, null);
         mConversationRecyclerView.setAdapter(mAdapter);
     }
 
