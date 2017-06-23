@@ -24,11 +24,11 @@ public class User {
 
     @Exclude
     private List<Conversation> conversationList;
-    private Map<String, String> friendList;
+    private List<User> friendList;
 
     public User() {
         super();
-        this.friendList = new HashMap<>();
+        this.friendList = new ArrayList<>();
         this.conversationList = new ArrayList<>();
     }
 
@@ -58,21 +58,23 @@ public class User {
     }
 
 
+    @Exclude
     public String getId() {
         return this.id;
     }
 
+    @Exclude
     public void setId(String id) {
         this.id = id;
     }
 
     @Exclude
-    public Map<String, String> getFriendList() {
+    public List<User> getFriendList() {
         return this.friendList;
     }
 
     @Exclude
-    public void setFriendList(Map<String, String> friendList) {
+    public void setFriendList(List<User> friendList) {
         this.friendList = friendList;
     }
 

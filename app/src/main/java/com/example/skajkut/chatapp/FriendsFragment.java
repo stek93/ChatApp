@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,15 +46,18 @@ public class FriendsFragment extends Fragment {
 
     private List<String> usersKeys = new ArrayList<>();
     private List<User> users = new ArrayList<>();
+    private List<User> friendList = new ArrayList<>();
 
-    @BindView(R.id.rw_friendList) RecyclerView mRecyclerView;
+    @BindView(R.id.rw_friendList)
+    RecyclerView mRecyclerView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view  = inflater.inflate(R.layout.fragment_friend_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_tab_friends, container, false);
         ButterKnife.bind(this, view);
+
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -61,9 +67,9 @@ public class FriendsFragment extends Fragment {
 
         getUsersKeys();
 
-
         return view;
     }
+
 
     private void getUsersKeys(){
 
@@ -78,10 +84,9 @@ public class FriendsFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     usersKeys.add(snapshot.getKey());
+
                 }
-
-                //getUserByKey(usersKeys);
-
+            printUser();
             }
 
             @Override
@@ -91,20 +96,48 @@ public class FriendsFragment extends Fragment {
         });
     }
 
+    private void findFriends(){
 
+        mDatabaseReference = mFirebaseDatabase.getReference("users");
+        mDatabaseReference.keepSynced(true);
+        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot s : dataSnapshot.getChildren()){
+                    User u = s.getValue(User.class);
+                    users.add(u);
+
+                    for (String key : usersKeys){
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void printUser(){
         for (String i : usersKeys){
             System.out.println("USER KEYS: " + i);
         }
 
-        for (User i : users){
+        for (User i : friendList){
             System.out.println("Users: " + i);
         }
     }
 
-    private void setAdapter(){
+    private void setAdapter() {
         mFriendsAdapter = new FriendsAdapter(getActivity(), users);
         mRecyclerView.setAdapter(mFriendsAdapter);
     }
+
+
+
+
 }
+
