@@ -34,14 +34,14 @@ public class ConversationsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab_chats, container, false);
 
-        ButterKnife.bind(mContext, view);
+       ButterKnife.bind(mContext, view);
 
-        mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+       //mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
 
         return view;
     }
 
-    private class ConversationListHolder extends RecyclerView.ViewHolder {
+    public class ConversationListHolder extends RecyclerView.ViewHolder {
 
         // TODO ako gledamo sliku kao putanju do resursa
         public String mUserImage;
