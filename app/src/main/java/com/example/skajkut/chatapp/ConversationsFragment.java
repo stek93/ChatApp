@@ -122,7 +122,7 @@ public class ConversationsFragment extends Fragment {
             mConversation = conversation;
             //TODO
             mTitleMessage.setText("TITLE");
-            Log.d("STEK", conversation.getUsers().get(0).getFirstname());
+            //Log.d("STEK", conversation.getUsers().get(0).getFirstname());
         }
     }
 
