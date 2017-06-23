@@ -67,6 +67,8 @@ public class FriendsFragment extends Fragment {
 
         getUsersKeys();
 
+
+
         return view;
     }
 
@@ -74,54 +76,37 @@ public class FriendsFragment extends Fragment {
     private void getUsersKeys(){
 
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        mDatabaseReference = mFirebaseDatabase.getReference("friendlist");
+        mDatabaseReference = mFirebaseDatabase
+                .getReference("friendlist").child(mFirebaseUser.getUid());
 
         mDatabaseReference.keepSynced(true);
 
-        Query query = mDatabaseReference.child(mFirebaseUser.getUid());
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    usersKeys.add(snapshot.getKey());
+                for (final DataSnapshot snap : dataSnapshot.getChildren()){
 
-                }
-            printUser();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    DatabaseReference userRef = mFirebaseDatabase.getReference().child("users");
+                    Query q = userRef.orderByKey().equalTo(snap.getKey());
 
-            }
-        });
-    }
-
-    private void findFriends(){
-
-        mDatabaseReference = mFirebaseDatabase.getReference("users");
-        mDatabaseReference.keepSynced(true);
-        mDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot s : dataSnapshot.getChildren()){
-                    User u = s.getValue(User.class);
-                    users.add(u);
-
-                    for (String key : usersKeys){
-
-                        for (User user : users){
-
-                            if (user.getId().equals(key)){
-                                friendList.add(user);
+                    q.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                User u = snapshot.getValue(User.class);
+                                users.add(u);
                             }
+                            setAdapter();
                         }
-                    }
-                    setAdapter();
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
                 }
-
-                printUser();
-                setAdapter();
             }
 
             @Override
@@ -129,20 +114,14 @@ public class FriendsFragment extends Fragment {
 
             }
         });
+
+
+
     }
 
-    private void printUser(){
-        for (String i : usersKeys){
-            System.out.println("USER KEYS: " + i);
-        }
-
-        for (User i : friendList){
-            System.out.println("Users: " + i);
-        }
-    }
 
     private void setAdapter() {
-        mFriendsAdapter = new FriendsAdapter(getActivity(), friendList);
+        mFriendsAdapter = new FriendsAdapter(getActivity(), users);
         mRecyclerView.setAdapter(mFriendsAdapter);
     }
 
