@@ -3,7 +3,6 @@ package com.example.skajkut.chatapp.data.model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Stefan Kajkut on 6/20/2017.
@@ -12,26 +11,26 @@ import java.util.Set;
 
 public class Conversation {
 
-    private Set<User> users;
+    private List<User> users;
     private List<Message> messageList;
 
     public Conversation() {
         super();
-        this.users = new HashSet<>();
+        this.users = new ArrayList<>();
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(Set<User> users, List<Message> messages) {
+    public Conversation(List<User> users, List<Message> messages) {
         super();
         this.users = users;
         this.messageList = messages;
     }
 
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Set<User> users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 
