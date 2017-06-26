@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.example.skajkut.chatapp.data.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by n.sofronovic on 6/22/2017.
@@ -37,7 +39,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     @Override
     public void onBindViewHolder(FriendsAdapter.ViewHolder holder, int position) {
         User user = users.get(position);
-        holder.usernameTextView.setText(user.getUsername());
+        holder.emailTextView.setText(user.getUsername());
         holder.fullnameTextView.setText(user.getFirstname() + " " + user.getLastname());
     }
 
@@ -46,18 +48,32 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return users.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView userImageView;
-        private TextView usernameTextView;
+        private TextView emailTextView;
         private TextView fullnameTextView;
+        private ImageView favoriteIcon;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             userImageView = (ImageView) itemView.findViewById(R.id.iv_cw_userImage);
-            usernameTextView = (TextView) itemView.findViewById(R.id.tv_cw_username);
+            emailTextView = (TextView) itemView.findViewById(R.id.tv_cw_email);
             fullnameTextView = (TextView) itemView.findViewById(R.id.tv_cw_fullname);
+            favoriteIcon = (ImageView) itemView.findViewById(R.id.iv_favoriteIcon);
+
+            favoriteIcon.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            if (view.getId() == favoriteIcon.getId()){
+                Map<String, String> map = new HashMap<>();
+            }
         }
     }
 }

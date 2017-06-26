@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:id="@+id/cw_fav_friend"
-    android:layout_width="@dimen/cardview_fav_friend_width"
-    android:layout_height="@dimen/cardview_fav_friend_height"
-    app:cardElevation="@dimen/cardview_default_elevation"
-    app:cardCornerRadius="@dimen/cardview_corner_radius"
-    android:layout_gravity="center"
-    android:layout_margin="@dimen/margin_card_view"
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" />
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+
+    <android.support.v7.widget.CardView android:id="@+id/cw_fav_friend"
+        android:layout_width="@dimen/cardview_fav_friend_width"
+        android:layout_height="@dimen/cardview_fav_friend_height"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:cardCornerRadius="@dimen/cardview_corner_radius"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_card_view">
+
+
+        <ImageView
+            android:id="@+id/iv_cw_favFriendImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="15dp"
+            android:background="@mipmap/ic_launcher"/>
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_cw_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="username"
+        android:layout_below="@id/cw_fav_friend"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
