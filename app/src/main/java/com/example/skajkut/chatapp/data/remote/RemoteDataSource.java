@@ -116,17 +116,80 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getUserByID(String userID, GetUserCallback callback) {
+    public void getUserByID(String userID, final GetUserCallback callback) {
+        databaseReference = firebaseDatabase
+                .getReference(USERS)
+                .child(userID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                callback.onSuccess(user);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (databaseError.getCode()){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                }
+            }
+        });
     }
 
     @Override
-    public void getUserByUsername(String username, GetUserCallback callback) {
+    public void getUserByUsername(String username, final GetUserCallback callback) {
+        databaseReference = firebaseDatabase
+                .getReference(USERS)
+                .child(username);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                callback.onSuccess(user);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (databaseError.getCode()){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                }
+            }
+        });
     }
 
     @Override
-    public void getAllUsers(GetUsersCallback callback) {
+    public void getAllUsers(final GetUsersCallback callback) {
+        final List<User> users = new ArrayList<>();
+        databaseReference = firebaseDatabase
+                .getReference(USERS);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    User user = snapshot.getValue(User.class);
+                    users.add(user);
+                }
+                callback.onSuccess(users);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (DatabaseError.NETWORK_ERROR){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                }
+            }
+        });
     }
 }
