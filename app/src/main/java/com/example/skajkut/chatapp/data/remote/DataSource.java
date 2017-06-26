@@ -20,52 +20,48 @@ public abstract class DataSource {
     public abstract void getUserByUsername(String username, GetUserCallback callback);
     public abstract void getAllUsers(GetUsersCallback callback);
 
-    public interface GetConversationListCallback {
+    private interface GetEntityCallback<T> {
+        void onSuccess(T classType);
+
+        void onFailure(Throwable throwable);
+
+        void onNetworkFailure();
+    }
+
+    public interface GetConversationListCallback extends GetEntityCallback<List<String>> {
+
+        @Override
         void onSuccess(List<String> conversations);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
-    public interface GetConversationCallback {
+    public interface GetConversationCallback extends GetEntityCallback<Conversation> {
+
+        @Override
         void onSuccess(Conversation conversation);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
-    public interface GetFriendListCallback {
+    public interface GetFriendListCallback extends GetEntityCallback<List<User>> {
+
+        @Override
         void onSuccess(List<User> users);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
-    public interface GetFavoriteListCallback {
+    public interface GetFavoriteListCallback extends GetEntityCallback<List<User>> {
+
+        @Override
         void onSuccess(List<User> users);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
-    public interface GetUserCallback {
+    public interface GetUserCallback extends GetEntityCallback<User> {
+
+        @Override
         void onSuccess(User user);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
-    public interface GetUsersCallback {
+    public interface GetUsersCallback extends GetEntityCallback<List<User>> {
+
+        @Override
         void onSuccess(List<User> users);
-
-        void onFailure(Throwable throwable);
-
-        void onNetworkFailure();
     }
 
 }

@@ -2,7 +2,6 @@ package com.example.skajkut.chatapp.data.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +13,10 @@ import java.util.Map;
 public class Conversation {
 
     private String id;
+    private String title;
     private Map<String, Object> users;
     private List<Message> messageList;
+    private Message lastMessage;
 
     public Conversation() {
         super();
@@ -23,10 +24,11 @@ public class Conversation {
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(Map<String, Object> users, List<Message> messages) {
+    public Conversation(Map<String, Object> users, List<Message> messages, String title) {
         super();
         this.users = users;
         this.messageList = messages;
+        this.title = title;
     }
 
     public String getId() {
@@ -53,4 +55,19 @@ public class Conversation {
         this.messageList = messageList;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Message getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(Message lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }

@@ -106,13 +106,61 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getFriendList(String userID, GetFriendListCallback callback) {
-        List<User> userList = new ArrayList<>();
+    public void getFriendList(String userID, final GetFriendListCallback callback) {
+        final List<User> userList = new ArrayList<>();
+        databaseReference = firebaseDatabase.getReference()
+                .child(FRIEND_LIST)
+                .child(userID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    userList.add(user);
+                }
+                callback.onSuccess(userList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (databaseError.getCode()) {
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                }
+            }
+        });
     }
 
     @Override
-    public void getFavoriteList(String userID, GetFavoriteListCallback callback) {
+    public void getFavoriteList(String userID, final GetFavoriteListCallback callback) {
+        final List<User> userList = new ArrayList<>();
+        databaseReference = firebaseDatabase.getReference()
+                .child(FAVORITE_FRIENDS)
+                .child(userID);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    userList.add(user);
+                }
+                callback.onSuccess(userList);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (databaseError.getCode()) {
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                }
+            }
+        });
     }
 
     @Override
