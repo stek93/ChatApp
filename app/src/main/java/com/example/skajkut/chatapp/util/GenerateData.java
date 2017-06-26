@@ -1,7 +1,5 @@
 package com.example.skajkut.chatapp.util;
 
-import android.util.Log;
-
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.Message;
 import com.example.skajkut.chatapp.data.model.User;
@@ -58,6 +56,7 @@ public final class GenerateData {
         user3.setPassword("123");
 
         Conversation c1 = new Conversation();
+        c1.setTitle("Title1");
         c1.getUsers().put(user1.getId(), user1.getUsername());
         c1.getUsers().put(user2.getId(), user2.getUsername());
         c1.setId(mDatabase.push().getKey());
@@ -119,7 +118,10 @@ public final class GenerateData {
         for(Message m : c1.getMessageList()) {
             mDatabase.child("conversations").child(c1.getId()).child("messages").setValue(m);
             mDatabase.child("conversations").child(c1.getId()).child("users").updateChildren(c1.getUsers());
+            mDatabase.child("conversations").child(c1.getId()).child("lastMessage").setValue(m);
         }
+
+        mDatabase.child("conversations").child(c1.getId()).child("title").setValue(c1.getTitle());
         mDatabase.child("conversationlist").child(user1.getId()).setValue(c1.getId());
 
     }

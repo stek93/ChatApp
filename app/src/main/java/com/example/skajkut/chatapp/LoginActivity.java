@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.skajkut.chatapp.util.GenerateData;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.google.android.gms.common.SignInButton;
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity   {
         FacebookSdk.sdkInitialize(getApplicationContext());
         //mCallbackManager = CallbackManager.Factory.create();
 
-        //GenerateData.getInstance().generateRandomData();
+        GenerateData.getInstance().generateRandomData();
         mFirebaseAuth = FirebaseAuth.getInstance();
 
             /**/

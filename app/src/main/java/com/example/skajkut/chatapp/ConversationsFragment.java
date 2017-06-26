@@ -9,15 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.skajkut.chatapp.data.model.Conversation;
+import com.example.skajkut.chatapp.data.model.model.Conversation;
 import com.example.skajkut.chatapp.util.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -37,6 +37,9 @@ public class ConversationsFragment extends Fragment {
 
     @BindView(R.id.rw_coneversation_list)
     RecyclerView mConversationRecyclerView;
+
+    @BindView(R.id.pb_chat_loading)
+    ProgressBar mProgressBar;
 
     private Context mContext;
     private ConversationAdapter mAdapter;
@@ -59,7 +62,7 @@ public class ConversationsFragment extends Fragment {
         //mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mConversationRecyclerView = (RecyclerView) view.findViewById(R.id.rw_coneversation_list);
 
-//        updateUI();
+        updateUI();
 
         return view;
     }
@@ -68,14 +71,39 @@ public class ConversationsFragment extends Fragment {
         mConversationList = new ArrayList<>();
         setupFirebase();
 
-        DatabaseReference db1 = mFirebaseDatabase.getReference("conversations");
-        db1.addValueEventListener(new ValueEventListener() {
+        //mProgressBar.setVisibility(View.VISIBLE);
+        Query q = mFirebaseDatabase.getReference("conversationlist").child("-KnIiEneW8DHOqdWGoUC");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snap : dataSnapshot.getChildren()){
+                String conversationID = dataSnapshot.getValue().toString();
+                findConversations(conversationID);
+            }
 
-                    DatabaseReference db2 = mFirebaseDatabase.getReference("users");
-                }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // TODO
+            }
+
+
+        });
+
+    }
+
+    private void createAdapter() {
+        mAdapter = new ConversationAdapter(null, null, null);
+        mConversationRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void findConversations(String conversationID) {
+        Query q = mFirebaseDatabase.getReference("conversations").child(conversationID);
+        q.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Conversation c = dataSnapshot.getValue(Conversation.class);
+                mConversationList.add(c);
+                createAdapter();
             }
 
             @Override
@@ -83,9 +111,6 @@ public class ConversationsFragment extends Fragment {
 
             }
         });
-
-        mAdapter = new ConversationAdapter(null, null, null);
-        mConversationRecyclerView.setAdapter(mAdapter);
     }
 
     private void setupFirebase() {
