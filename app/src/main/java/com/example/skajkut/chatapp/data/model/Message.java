@@ -11,18 +11,18 @@ public class Message {
 
     private String text;
     private Date dateTime;
-    private User user;
+    private String sender;
 
     public Message() {
         super();
         this.dateTime = new Date();
     }
 
-    public Message(String text, Date dateTime, User user) {
+    public Message(String text, Date dateTime, String sender) {
         super();
         this.text = text;
         this.dateTime = dateTime;
-        this.user = user;
+        this.sender = sender;
     }
 
     public String getText() {
@@ -41,11 +41,11 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public User getUser() {
-        return this.user;
+    public String getSender() {
+        return this.sender;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 }

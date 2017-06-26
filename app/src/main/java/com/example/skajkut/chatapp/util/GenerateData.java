@@ -33,6 +33,8 @@ public final class GenerateData {
     }
 
     public void generateRandomData() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
         User user1 = new User();
         user1.setId("-KnIiEneW8DHOqdWGoUC");
         user1.setFirstname("Stefan");
@@ -54,26 +56,29 @@ public final class GenerateData {
         user3.setLastname("Djolenece");
         user3.setUsername("djoks");
         user3.setPassword("123");
-/*
+
         Conversation c1 = new Conversation();
         c1.getUsers().put(user1.getId(), user1.getUsername());
         c1.getUsers().put(user2.getId(), user2.getUsername());
+        c1.setId(mDatabase.push().getKey());
 
         Message m1 = new Message();
         m1.getDateTime();
         m1.setText("Hello!");
-        m1.setUser(user1);
+        //m1.getUsers().put(user1.getId(), user1.getUsername());
+        m1.setSender(user1.getFirstname() + " " + user1.getLastname());
+        //m1.setUser(user1);
 
         Message m2 = new Message();
         m2.getDateTime();
         m2.setText("Hello from user2");
-        m2.setUser(user2);
+        //m2.getUsers().put(user2.getId(), user2.getUsername());
+        m2.setSender(user2.getFirstname() + " " + user2.getLastname());
 
         c1.getMessageList().add(m1);
-        c1.getMessageList().add(m2);*/
+        c1.getMessageList().add(m2);
 
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        user1.getConversationList().add(c1);
 /*
 
         String c_id = mDatabase.push().getKey();
@@ -98,18 +103,24 @@ public final class GenerateData {
         for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
             mDatabase.child("favoritefriends").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
-/*        for (User i : user2.getFriendList()) {
-             mDatabase.child("friendlist").child(user2.getId()).child(i.getId()).setValue(i);
+        for (Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
+             mDatabase.child("friendlist").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
-*/
+
        /* for (User i : user2.getFavoriteList()){
             mDatabase.child("favoritefriends").child(user2.getId()).child(i.getId()).setValue(i);
         }*/
-/*
+
         mDatabase.child("users").child(user1.getId()).setValue(user1);
         mDatabase.child("users").child(user2.getId()).setValue(user2);
-        mDatabase.child("users").child(user3.getId()).setValue(user3);*/
+        mDatabase.child("users").child(user3.getId()).setValue(user3);
 
-        //  }
+
+        for(Message m : c1.getMessageList()) {
+            mDatabase.child("conversations").child(c1.getId()).child("messages").setValue(m);
+            mDatabase.child("conversations").child(c1.getId()).child("users").updateChildren(c1.getUsers());
+        }
+        mDatabase.child("conversationlist").child(user1.getId()).setValue(c1.getId());
+
     }
 }

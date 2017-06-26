@@ -22,7 +22,6 @@ public class User {
     private String password;
     private String email;
 
-    @Exclude
     private List<Conversation> conversationList;
     private Map<String, String> friendList;
     private Map<String, String> favoriteList;
@@ -80,10 +79,12 @@ public class User {
         this.friendList = friendList;
     }
 
+    @Exclude
     public List<Conversation> getConversationList() {
         return this.conversationList;
     }
 
+    @Exclude
     public void setConversationList(List<Conversation> conversationList) {
         this.conversationList = conversationList;
     }
@@ -128,10 +129,12 @@ public class User {
         this.email = email;
     }
 
+    @Exclude
     public Map<String, String> getFavoriteList() {
         return this.favoriteList;
     }
 
+    @Exclude
     public void setFavoriteList(Map<String, String> favoriteList) {
         this.favoriteList = favoriteList;
     }

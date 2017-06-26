@@ -13,7 +13,8 @@ import java.util.Map;
 
 public class Conversation {
 
-    private Map<String, String> users;
+    private String id;
+    private Map<String, Object> users;
     private List<Message> messageList;
 
     public Conversation() {
@@ -22,17 +23,25 @@ public class Conversation {
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(Map<String, String> users, List<Message> messages) {
+    public Conversation(Map<String, Object> users, List<Message> messages) {
         super();
         this.users = users;
         this.messageList = messages;
     }
 
-    public Map<String, String> getUsers() {
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Map<String, Object> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Map<String, String> users) {
+    public void setUsers(Map<String, Object> users) {
         this.users = users;
     }
 
@@ -43,4 +52,5 @@ public class Conversation {
     public void setMessageList(List<Message> messageList) {
         this.messageList = messageList;
     }
+
 }
