@@ -44,13 +44,11 @@ public class FriendsFragment extends Fragment {
     private FriendsAdapter mFriendsAdapter;
     private FavoriteFriendsAdapter mFavoritesAdapter;
 
-    private List<String> usersKeys = new ArrayList<>();
     private List<User> users = new ArrayList<>();
     private List<User> favoriteFriends = new ArrayList<>();
 
     @BindView(R.id.rw_friendList) RecyclerView mRecyclerView;
     @BindView(R.id.rw_favoriteList) RecyclerView mFavRecyclerView;
-    @BindView(R.id.iv_favoriteIcon) ImageView favoriteIcon;
 
     @Nullable
     @Override
@@ -73,10 +71,8 @@ public class FriendsFragment extends Fragment {
 
         getFriends();
         getFavoriteFriends();
-        setFavoriteIcon();
         return view;
     }
-
 
     private void getFavoriteFriends(){
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -163,20 +159,7 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-
-
     }
-
-    private void addFavoriteFriend(){
-        mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if(mFirebaseUser != null){
-        }
-    }
-
-    private void setFavoriteIcon(){
-    }
-
 
     private void setFriendsAdapter() {
         mFriendsAdapter = new FriendsAdapter(getActivity(), users);

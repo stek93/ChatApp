@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="padding_recycler_view">10dp</dimen>
-    <dimen name="margin_card_view">3dp</dimen>
-    <dimen name="cardview_corner_radius">50dp</dimen>
-    <dimen name="cardview_fav_friend_width">100dp</dimen>
-    <dimen name="cardview_fav_friend_height">100dp</dimen>
+    <dimen name="margin_card_view">10dp</dimen>
+    <dimen name="cardview_corner_radius">30dp</dimen>
+    <dimen name="cardview_fav_friend_width">80dp</dimen>
+    <dimen name="cardview_fav_friend_height">80dp</dimen>
     <dimen name="cardview_friend_height">60dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
