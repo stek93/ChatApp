@@ -1,4 +1,4 @@
-package com.example.skajkut.chatapp;
+package com.example.skajkut.chatapp.ui.login;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.util.GenerateData;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;

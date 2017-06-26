@@ -1,4 +1,4 @@
-package com.example.skajkut.chatapp;
+package com.example.skajkut.chatapp.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.skajkut.chatapp.MainActivity;
+import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.data.model.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;

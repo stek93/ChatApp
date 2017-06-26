@@ -1,4 +1,4 @@
-package com.example.skajkut.chatapp;
+package com.example.skajkut.chatapp.ui.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,7 +16,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.skajkut.chatapp.data.model.model.User;
+import com.example.skajkut.chatapp.R;
+import com.example.skajkut.chatapp.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;

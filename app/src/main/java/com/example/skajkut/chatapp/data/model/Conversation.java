@@ -14,7 +14,7 @@ public class Conversation {
 
     private String id;
     private String title;
-    private Map<String, Object> users;
+    private Map<String, User> users;
     private List<Message> messageList;
     private Message lastMessage;
 
@@ -24,7 +24,7 @@ public class Conversation {
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(Map<String, Object> users, List<Message> messages, String title) {
+    public Conversation(Map<String, User> users, List<Message> messages, String title) {
         super();
         this.users = users;
         this.messageList = messages;
@@ -39,11 +39,11 @@ public class Conversation {
         this.id = id;
     }
 
-    public Map<String, Object> getUsers() {
+    public Map<String, User> getUsers() {
         return this.users;
     }
 
-    public void setUsers(Map<String, Object> users) {
+    public void setUsers(Map<String, User> users) {
         this.users = users;
     }
 

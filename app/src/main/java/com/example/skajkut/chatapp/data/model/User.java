@@ -21,6 +21,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String photo;
 
     private List<Conversation> conversationList;
     private Map<String, String> friendList;
@@ -127,6 +128,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     @Exclude

@@ -20,7 +20,7 @@ public abstract class DataSource {
     public abstract void getUserByUsername(String username, GetUserCallback callback);
     public abstract void getAllUsers(GetUsersCallback callback);
 
-    private interface GetEntityCallback<T> {
+    public interface GetEntityCallback<T> {
         void onSuccess(T classType);
 
         void onFailure(Throwable throwable);

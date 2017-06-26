@@ -27,7 +27,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme"/>
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -38,11 +38,11 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".ui.login.LoginActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.skajkut.chatapp.LoginActivity"/>
+                android:value="com.example.skajkut.chatapp.ui.login.LoginActivity"/>
         </activity>
     </application>
 

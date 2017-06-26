@@ -163,6 +163,17 @@ public class RemoteDataSource extends DataSource {
         });
     }
 
+    // TODO
+    private void test(DatabaseError databaseError, GetEntityCallback callback) {
+        switch (databaseError.getCode()){
+            case DatabaseError.NETWORK_ERROR:
+                callback.onNetworkFailure();
+                break;
+            default:
+                callback.onFailure(databaseError.toException());
+        }
+    }
+
     @Override
     public void getUserByID(String userID, final GetUserCallback callback) {
         databaseReference = firebaseDatabase
@@ -177,13 +188,7 @@ public class RemoteDataSource extends DataSource {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                switch (databaseError.getCode()){
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
-                }
+                test(databaseError, callback);
             }
         });
     }
