@@ -12,15 +12,21 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class FirebaseUserService {
 
-    private Application application;
+    private static FirebaseUserService instance = null;
 
     private FirebaseAuth firebaseAuth;
 
-    public FirebaseUserService(Application application) {
-        this.application = application;
+    public FirebaseUserService() {
         this.firebaseAuth = FirebaseAuth.getInstance();
     }
 
+
+    public static FirebaseUserService getInstance(){
+        if (instance == null){
+            instance = new FirebaseUserService();
+        }
+        return instance;
+    }
 
     public Task<AuthResult> getUserWithEmail(String email, String password){
         return firebaseAuth.signInWithEmailAndPassword(email, password);

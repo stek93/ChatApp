@@ -14,23 +14,30 @@ public interface LoginContract {
 
     interface View extends IBaseView {
 
-        void onRegistrationClicked(boolean show);
+        void showRegistrationLayout(boolean show);
 
-        void onLoginWithEmailAndPasswordClicked(boolean show);
+        void showLoginWithEmailAndPassword(boolean show);
+
+        void showFacebookLoginLayout(boolean show);
+
+        void showLoginFailed();
 
     }
 
     interface Presenter extends IBasePresenter<View> {
 
-        void showRegistrationLayout(boolean show);
+        void onRegistrationClicked(boolean show);
 
-        void showLoginWithEmailAndPasswordLayout(boolean show);
+        void onLoginWithEmailAndPasswordClicked(boolean show);
 
+        void onFacebokLoginClicked(boolean show);
 
         void loginViaEmail(String email, String password);
 
         void registration(String firstname, String lastname, String username,
                           String password, String email);
+
+
 
     }
 }

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.skajkut.chatapp.data.model.model.User;
+import com.example.skajkut.chatapp.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

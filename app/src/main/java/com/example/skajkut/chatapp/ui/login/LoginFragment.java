@@ -23,7 +23,6 @@ import com.example.skajkut.chatapp.util.mvp.BaseView;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -39,8 +38,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +64,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
     @BindView(R.id.l_registration) LinearLayout registrationLayout;
     @BindView(R.id.l_login) LinearLayout loginLayout;
-    @BindView(R.id.l_facebook_google_login) ConstraintLayout facebookLayout;
+    @BindView(R.id.l_facebook_google_login) LinearLayout facebookLayout;
     @BindView(R.id.et_firstname) TextInputEditText firstnameEditText;
     @BindView(R.id.et_lastname) TextInputEditText lastnameEditText;
     @BindView(R.id.et_username) TextInputEditText usernameEditText;
@@ -83,21 +80,25 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         super.onCreate(savedInstanceState);
 
         RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
+        FirebaseUserService firebaseUserService = FirebaseUserService.getInstance();
         presenter = new LoginPresenter(remoteDataSource, this, firebaseUserService); //TODO FirebaseUserService
 
         mCallbackManager = CallbackManager.Factory.create();
-        mFirebaseAuth = FirebaseAuth.getInstance(); 
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        ButterKnife.bind(this, view);
+        try {
+            ButterKnife.bind(this, view);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         initFacebook(view);
         initGoogle();
-
 
         return view;
     }
@@ -119,12 +120,6 @@ public class LoginFragment extends BaseView implements LoginContract.View,
     @OnClick(R.id.btn_google)
     public void onGoogleButtonClick(){
         signInWithGoogle();
-    }
-
-    @OnClick(R.id.email_login)
-    public void onButtonClicked() {
-/*        LoginActivity activity = (LoginActivity) getActivity();
-        activity.handleFragment(this);*/
     }
 
     private void signInWithGoogle(){
@@ -260,8 +255,24 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
     }
 
+    @OnClick(R.id.email_login)
+    public void onBtnEmailLogin()  {
+        presenter.onLoginWithEmailAndPasswordClicked(true);
+
+    }
+
+    @OnClick(R.id.btn_register)
+    public void onBtnRegister(){
+        presenter.onRegistrationClicked(true);
+    }
+
+    @OnClick(R.id.btn_closeRegistration)
+    public void onBtnCloseRegistration(){
+        presenter.onFacebokLoginClicked(true);
+    }
+
     @Override
-    public void onRegistrationClicked(boolean show) {
+    public void showRegistrationLayout(boolean show) {
         if(show){
             registrationLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
@@ -269,17 +280,28 @@ public class LoginFragment extends BaseView implements LoginContract.View,
     }
 
     @Override
-    public void onLoginWithEmailAndPasswordClicked(boolean show) {
+    public void showLoginWithEmailAndPassword(boolean show) {
         if (show){
             loginLayout.setVisibility(View.VISIBLE);
             facebookLayout.setVisibility(View.GONE);
         }
     }
 
-    @OnClick(R.id.email_login)
-    public void onBtnEmailLogin(){
-        presenter.showLoginWithEmailAndPasswordLayout(true);
+
+    @Override
+    public void showFacebookLoginLayout(boolean show) {
+        if (show){
+            facebookLayout.setVisibility(View.VISIBLE);
+            registrationLayout.setVisibility(View.GONE);
+
+        }
     }
+
+    @Override
+    public void showLoginFailed() {
+        Toast.makeText(getActivity(), "Login failed!", Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public Context getPermission() {

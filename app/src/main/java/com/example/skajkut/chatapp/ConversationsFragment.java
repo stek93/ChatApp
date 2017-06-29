@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.skajkut.chatapp.data.model.model.Conversation;
+import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.util.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

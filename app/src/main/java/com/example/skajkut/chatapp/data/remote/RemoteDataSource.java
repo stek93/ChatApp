@@ -248,7 +248,7 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void createUser(String firstname, String lastname, String username,
-                           String email, String password, AddUserCallback callback) {
+                           String password, String email, AddUserCallback callback) {
         User user = new User(firstname, lastname, username, password, email);
         databaseReference = firebaseDatabase
                 .getReference(USERS);

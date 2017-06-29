@@ -57,8 +57,8 @@ public final class GenerateData {
 
         Conversation c1 = new Conversation();
         c1.setTitle("Title1");
-        c1.getUsers().put(user1.getId(), user1.getUsername());
-        c1.getUsers().put(user2.getId(), user2.getUsername());
+//        c1.getUsers().put(user1.getId(), user1.getUsername());
+//        c1.getUsers().put(user2.getId(), user2.getUsername());
         c1.setId(mDatabase.push().getKey());
 
         Message m1 = new Message();
@@ -117,7 +117,7 @@ public final class GenerateData {
 
         for(Message m : c1.getMessageList()) {
             mDatabase.child("conversations").child(c1.getId()).child("messages").setValue(m);
-            mDatabase.child("conversations").child(c1.getId()).child("users").updateChildren(c1.getUsers());
+            //mDatabase.child("conversations").child(c1.getId()).child("users").updateChildren(c1.getUsers());
             mDatabase.child("conversations").child(c1.getId()).child("lastMessage").setValue(m);
         }
 

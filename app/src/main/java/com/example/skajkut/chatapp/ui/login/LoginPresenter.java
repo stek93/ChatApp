@@ -9,7 +9,6 @@ import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
-import com.facebook.CallbackManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -33,19 +32,25 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     @Override
-    public void showRegistrationLayout(boolean show) {
-        if(show){
-            view.onLoginWithEmailAndPasswordClicked(true);
+    public void onRegistrationClicked(boolean show) {
+        if (show){
+            view.showRegistrationLayout(true);
         }
     }
 
     @Override
-    public void showLoginWithEmailAndPasswordLayout(boolean show) {
-        if(show){
-            view.onRegistrationClicked(true);
+    public void onLoginWithEmailAndPasswordClicked(boolean show) {
+        if (show){
+            view.showLoginWithEmailAndPassword(true);
         }
     }
 
+    @Override
+    public void onFacebokLoginClicked(boolean show) {
+        if (show){
+            view.showFacebookLoginLayout(true);
+        }
+    }
 
     @Override
     public void loginViaEmail(final String email,final String password) {
@@ -54,8 +59,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()) {
-                            Toast.makeText(view.getPermission(), "Login failed!", Toast.LENGTH_SHORT).show();
-                            System.out.println(task.getException());
+                            view.showLoginFailed();
                         } else {
                             //checkSharedPref(email);
                         }
@@ -65,7 +69,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void registration(final String firstname, final String lastname, final String username, final String password, final String email) {
-        firebaseUserService.registerUserWithEmail(email, password)
+        try{firebaseUserService.registerUserWithEmail(email, password)
                 .addOnCompleteListener((Activity) view.getPermission(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -76,6 +80,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                         }
                     }
                 });
+    }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void createUser(String firstname, String lastname, String username, String password, String email){
@@ -91,6 +99,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 if(view != null){
                     //Uspesna registracija
                     //Prosledi u main activity
+                    view.setProgressBar(false);
                 }
             }
 
