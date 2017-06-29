@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.widget.Toast;
 
+import com.example.skajkut.chatapp.MainActivity;
 import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
@@ -61,7 +62,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                         if(!task.isSuccessful()) {
                             view.showLoginFailed();
                         } else {
-                            //checkSharedPref(email);
+                            view.startNewActivity();
                         }
                     }
                 });
@@ -74,7 +75,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()){
-                            Toast.makeText(view.getPermission(), "Registration failed!", Toast.LENGTH_SHORT).show();
+                            view.showLoginFailed();
                         }else{
                             createUser(firstname, lastname, username, password, email);
                         }
@@ -97,8 +98,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             @Override
             public void onSuccess(User user) {
                 if(view != null){
-                    //Uspesna registracija
-                    //Prosledi u main activity
+                    view.startNewActivity();
                     view.setProgressBar(false);
                 }
             }

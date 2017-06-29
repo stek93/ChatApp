@@ -1,10 +1,12 @@
 package com.example.skajkut.chatapp.util.mvp;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.skajkut.chatapp.MainActivity;
 import com.example.skajkut.chatapp.R;
 
 import butterknife.BindView;
@@ -36,5 +38,15 @@ public abstract class BaseView extends Fragment implements IBaseView {
     @Override
     public void showNetworkFailureMessage(boolean show) {
         // TODO
+    }
+
+    @Override
+    public Context getPermission() {
+        return getActivity();
+    }
+
+    @Override
+    public void startNewActivity() {
+
     }
 }
