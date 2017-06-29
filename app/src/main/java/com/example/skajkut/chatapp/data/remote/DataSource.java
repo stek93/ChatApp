@@ -19,6 +19,8 @@ public abstract class DataSource {
     public abstract void getUserByID(String userID, GetUserCallback callback);
     public abstract void getUserByUsername(String username, GetUserCallback callback);
     public abstract void getAllUsers(GetUsersCallback callback);
+    public abstract void createUser(String firstname, String lastname, String username,
+                                    String email, String password, AddUserCallback callback);
 
     public interface GetEntityCallback<T> {
         void onSuccess(T classType);
@@ -62,6 +64,12 @@ public abstract class DataSource {
 
         @Override
         void onSuccess(List<User> users);
+    }
+
+    public interface AddUserCallback extends GetEntityCallback<User>{
+
+        @Override
+        void onSuccess(User user);
     }
 
 }

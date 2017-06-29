@@ -2,23 +2,28 @@ package com.example.skajkut.chatapp.ui.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TextInputEditText;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.skajkut.chatapp.MainActivity;
 import com.example.skajkut.chatapp.R;
-import com.example.skajkut.chatapp.data.model.User;
+import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
+import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
+import com.example.skajkut.chatapp.util.mvp.BaseView;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -45,28 +50,43 @@ import butterknife.OnClick;
  * Created by n.sofronovic on 6/21/2017.
  */
 
-public class LoginFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+public class LoginFragment extends BaseView implements LoginContract.View,
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
 
     private static final int RC_SIGN_IN = 9001;
 
-
     @BindView(R.id.btn_facebook) LoginButton mFacebookButton;
-    @BindView(R.id.email_login)
-    Button mLoginButton;
+    @BindView(R.id.email_login) Button mLoginButton;
     private CallbackManager mCallbackManager;
 
     private GoogleApiClient mGoogleApiClient;
-    private DatabaseReference mDatabaseReference;
-    private FirebaseDatabase mFirebaseDatabase;
     private FirebaseAuth mFirebaseAuth;
 
-    private static final String USER_SP = "user.sp";
+    private LoginContract.Presenter presenter;
+    private FirebaseUserService firebaseUserService;
+
+    @BindView(R.id.l_registration) LinearLayout registrationLayout;
+    @BindView(R.id.l_login) LinearLayout loginLayout;
+    @BindView(R.id.l_facebook_google_login) ConstraintLayout facebookLayout;
+    @BindView(R.id.et_firstname) TextInputEditText firstnameEditText;
+    @BindView(R.id.et_lastname) TextInputEditText lastnameEditText;
+    @BindView(R.id.et_username) TextInputEditText usernameEditText;
+    @BindView(R.id.et_password) TextInputEditText passwordEditText;
+    @BindView(R.id.et_email) TextInputEditText emailEditText;
+    @BindView(R.id.btn_login) Button loginButton;
+    @BindView(R.id.email) EditText emailLogin;
+    @BindView(R.id.password) EditText passwordLogin;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
+        presenter = new LoginPresenter(remoteDataSource, this, firebaseUserService); //TODO FirebaseUserService
+
         mCallbackManager = CallbackManager.Factory.create();
+        mFirebaseAuth = FirebaseAuth.getInstance(); 
     }
 
     @Nullable
@@ -78,11 +98,10 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
         initFacebook(view);
         initGoogle();
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
 
         return view;
     }
+
 
     private void initGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -104,8 +123,8 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
     @OnClick(R.id.email_login)
     public void onButtonClicked() {
-        LoginActivity activity = (LoginActivity) getActivity();
-        activity.handleFragment(this);
+/*        LoginActivity activity = (LoginActivity) getActivity();
+        activity.handleFragment(this);*/
     }
 
     private void signInWithGoogle(){
@@ -169,7 +188,6 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                         if (task.isSuccessful()){
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
 
-                            addUser(user);
                             Toast.makeText(getActivity(), user.getDisplayName(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getActivity(), MainActivity.class));
                         }else{
@@ -180,32 +198,48 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
                 });
     }
 
-    private void addUser(FirebaseUser firebaseUser){
+    //Login with email
+    @OnClick(R.id.btn_login)
+    public void login() {
+        final String email = emailLogin.getText().toString();
+        final String password = passwordLogin.getText().toString();
 
-        String id = firebaseUser.getUid();
-        String name = firebaseUser.getDisplayName();
-        String email = firebaseUser.getEmail();
+        if(email.length() == 0) {
+            emailLogin.setError("Email is required!");
+        } else if(password.length() == 0) {
+            passwordLogin.setError("Password is required");
+        }
 
-        String[] nameValues = name.split(" ");
-        String firstName = nameValues[0];
-        String lastName = nameValues[1];
-
-        User user = new User(id, firstName, lastName, email);
-
-        mDatabaseReference = mFirebaseDatabase.getReference("users");
-        mDatabaseReference.child(id).setValue(user);
-
-        addUserToSharedPref(id, firstName, lastName, email);
-
+        presenter.loginViaEmail(email, password);
     }
 
-    private void addUserToSharedPref(String id, String firstName, String lastName, String email){
-        SharedPreferences.Editor editor = this.getActivity().getSharedPreferences(USER_SP, Context.MODE_PRIVATE).edit();
-        editor.putString("id", id);
-        editor.putString("firstname", firstName);
-        editor.putString("lastname", lastName);
-        editor.putString("email", email);
-        editor.apply();
+    //Registration with email
+    @OnClick(R.id.btn_submitRegistration)
+    public void registration(){
+
+        final String firstname = firstnameEditText.getText().toString();
+        final String lastname = lastnameEditText.getText().toString();
+        final String username = usernameEditText.getText().toString();
+        final String password = passwordEditText.getText().toString();
+        final String email = emailEditText.getText().toString();
+
+        if (firstname.length() == 0){
+            firstnameEditText.setError("First name is required!");
+        }
+        else if(lastname.length() == 0){
+            lastnameEditText.setError("Last name is required!");
+        }
+        else if(username.length() == 0){
+            usernameEditText.setError("Username is required!");
+        }
+        else if(password.length() <= 5){
+            passwordEditText.setError("Password must be longer than 5 characters!");
+        }else if(email.length() == 0){
+            emailEditText.setError("Email is required!");
+        }
+
+        presenter.registration(firstname, lastname, username, password, email);
+
     }
 
 
@@ -226,4 +260,29 @@ public class LoginFragment extends Fragment implements GoogleApiClient.OnConnect
 
     }
 
+    @Override
+    public void onRegistrationClicked(boolean show) {
+        if(show){
+            registrationLayout.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onLoginWithEmailAndPasswordClicked(boolean show) {
+        if (show){
+            loginLayout.setVisibility(View.VISIBLE);
+            facebookLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.email_login)
+    public void onBtnEmailLogin(){
+        presenter.showLoginWithEmailAndPasswordLayout(true);
+    }
+
+    @Override
+    public Context getPermission() {
+        return getActivity();
+    }
 }

@@ -1,7 +1,18 @@
 package com.example.skajkut.chatapp.ui.login;
 
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
+
 import com.example.skajkut.chatapp.data.model.User;
+import com.example.skajkut.chatapp.data.remote.DataSource;
+import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
+import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
+import com.facebook.CallbackManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 
 
 /**
@@ -9,10 +20,96 @@ import com.example.skajkut.chatapp.util.mvp.BasePresenter;
  * Contact me on stefan.kajkutsf@gmail.com.
  */
 
-public class LoginPresenter extends BasePresenter {
+public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
 
-    /*void readSharedPreferences();
+    private RemoteDataSource mRemoteDataSource;
+    private FirebaseUserService firebaseUserService;
 
-    void writeSharedPreferences(User user);
-*/
+    public LoginPresenter(RemoteDataSource mRemoteDataSource,
+                          LoginContract.View view, FirebaseUserService firebaseUserService) {
+        this.mRemoteDataSource = mRemoteDataSource;
+        this.view = view;
+        this.firebaseUserService = firebaseUserService;
+    }
+
+    @Override
+    public void showRegistrationLayout(boolean show) {
+        if(show){
+            view.onLoginWithEmailAndPasswordClicked(true);
+        }
+    }
+
+    @Override
+    public void showLoginWithEmailAndPasswordLayout(boolean show) {
+        if(show){
+            view.onRegistrationClicked(true);
+        }
+    }
+
+
+    @Override
+    public void loginViaEmail(final String email,final String password) {
+        firebaseUserService.getUserWithEmail(email, password)
+                .addOnCompleteListener((Activity) view.getPermission(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()) {
+                            Toast.makeText(view.getPermission(), "Login failed!", Toast.LENGTH_SHORT).show();
+                            System.out.println(task.getException());
+                        } else {
+                            //checkSharedPref(email);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void registration(final String firstname, final String lastname, final String username, final String password, final String email) {
+        firebaseUserService.registerUserWithEmail(email, password)
+                .addOnCompleteListener((Activity) view.getPermission(), new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(!task.isSuccessful()){
+                            Toast.makeText(view.getPermission(), "Registration failed!", Toast.LENGTH_SHORT).show();
+                        }else{
+                            createUser(firstname, lastname, username, password, email);
+                        }
+                    }
+                });
+    }
+
+    private void createUser(String firstname, String lastname, String username, String password, String email){
+        if (view == null){
+            return;
+        }
+
+        view.setProgressBar(true);
+
+        mRemoteDataSource.createUser(firstname, lastname, username, password, email, new DataSource.AddUserCallback() {
+            @Override
+            public void onSuccess(User user) {
+                if(view != null){
+                    //Uspesna registracija
+                    //Prosledi u main activity
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                if (view != null){
+                    view.setProgressBar(false);
+                    view.showToastMessage("Something went wrong");
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
+            }
+        });
+    }
+
 }

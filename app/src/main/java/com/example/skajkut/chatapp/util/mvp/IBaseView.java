@@ -15,6 +15,6 @@ public interface IBaseView {
 
     void showNetworkFailureMessage(boolean show);
 
-    Context getContext();
+    Context getPermission();
 
 }
