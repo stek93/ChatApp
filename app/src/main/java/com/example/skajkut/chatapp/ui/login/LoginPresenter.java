@@ -78,6 +78,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                             view.showLoginFailed();
                         }else{
                             createUser(firstname, lastname, username, password, email);
+                            //view.startNewActivity();
                         }
                     }
                 });
