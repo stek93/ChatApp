@@ -23,53 +23,62 @@ public abstract class DataSource {
                                     String email, String password, AddUserCallback callback);
 
     public interface GetEntityCallback<T> {
+
         void onSuccess(T classType);
 
         void onFailure(Throwable throwable);
 
         void onNetworkFailure();
+
     }
 
     public interface GetConversationListCallback extends GetEntityCallback<List<String>> {
 
         @Override
         void onSuccess(List<String> conversations);
+
     }
 
     public interface GetConversationCallback extends GetEntityCallback<Conversation> {
 
         @Override
         void onSuccess(Conversation conversation);
+
     }
 
     public interface GetFriendListCallback extends GetEntityCallback<List<User>> {
 
         @Override
         void onSuccess(List<User> users);
+
     }
 
     public interface GetFavoriteListCallback extends GetEntityCallback<List<User>> {
 
         @Override
         void onSuccess(List<User> users);
+
     }
 
     public interface GetUserCallback extends GetEntityCallback<User> {
 
         @Override
         void onSuccess(User user);
+
     }
 
     public interface GetUsersCallback extends GetEntityCallback<List<User>> {
 
         @Override
         void onSuccess(List<User> users);
+
     }
 
     public interface AddUserCallback extends GetEntityCallback<User>{
 
         @Override
         void onSuccess(User user);
+
     }
 
 

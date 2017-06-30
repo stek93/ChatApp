@@ -74,10 +74,10 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
         View view = inflater.inflate(R.layout.fragment_tab_friends, container, false);
         ButterKnife.bind(this, view);
 
-        mFriendsLayoutManager = new LinearLayoutManager(getActivity());
+        mFriendsLayoutManager = new LinearLayoutManager(getPermission());
         mRecyclerView.setLayoutManager(mFriendsLayoutManager);
 
-        mFavoritesLayoutManager = new LinearLayoutManager(getActivity(),
+        mFavoritesLayoutManager = new LinearLayoutManager(getPermission(),
                 LinearLayoutManager.HORIZONTAL, false);
         mFavRecyclerView.setLayoutManager(mFavoritesLayoutManager);
 

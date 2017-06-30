@@ -17,20 +17,19 @@ import java.util.List;
 public class FriendPresenter  extends BasePresenter<FriendContract.View> implements FriendContract.Presenter{
 
     private RemoteDataSource remoteDataSource;
-    private FirebaseUserService firebaseUserService;
 
-    public FriendPresenter(RemoteDataSource remoteDataSource, FirebaseUserService firebaseUserService,
+    public FriendPresenter(RemoteDataSource remoteDataSource,
                            FriendContract.View view) {
         this.remoteDataSource = remoteDataSource;
-        this.firebaseUserService = firebaseUserService;
         this.view = view;
     }
 
     @Override
     public void getFriends(String userID) {
-/*        if (view !=null){
+
+        if (view == null){
             return;
-        }*/
+        }
 
         view.setProgressBar(true);
 
