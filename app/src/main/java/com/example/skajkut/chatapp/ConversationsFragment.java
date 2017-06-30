@@ -62,7 +62,7 @@ public class ConversationsFragment extends Fragment {
         //mConversationRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mConversationRecyclerView = (RecyclerView) view.findViewById(R.id.rw_coneversation_list);
 
-        updateUI();
+//        updateUI();
 
         return view;
     }

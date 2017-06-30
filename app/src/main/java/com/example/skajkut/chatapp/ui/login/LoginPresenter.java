@@ -108,7 +108,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             public void onFailure(Throwable throwable) {
                 if (view != null){
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong");
+                    view.showToastMessage("Something went wrong!");
                 }
             }
 
