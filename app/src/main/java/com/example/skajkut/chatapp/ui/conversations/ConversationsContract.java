@@ -1,6 +1,4 @@
-package com.example.skajkut.chatapp.ui.conversation;
-
-import android.content.Context;
+package com.example.skajkut.chatapp.ui.conversations;
 
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.util.mvp.IBasePresenter;
@@ -12,19 +10,17 @@ import java.util.List;
  * Created by n.sofronovic on 6/20/2017.
  */
 
-public interface ConversationContract {
+public interface ConversationsContract {
 
     interface View extends IBaseView {
 
-        void showPhoto(List<String> photos);
-
-        void showConversationDetails(Conversation conversation);
+        void showConversationsList(List<Conversation> conversations);
 
     }
 
     interface Presenter extends IBasePresenter<View> {
 
-        void getConversation(Context context, String conversationID);
+        void getConversations(String userID);
 
     }
 

@@ -7,7 +7,6 @@ import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -18,23 +17,23 @@ import java.util.List;
 public class FriendPresenter  extends BasePresenter<FriendContract.View> implements FriendContract.Presenter{
 
     private RemoteDataSource remoteDataSource;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseUserService firebaseUserService;
 
-    public FriendPresenter(RemoteDataSource remoteDataSource,
+    public FriendPresenter(RemoteDataSource remoteDataSource, FirebaseUserService firebaseUserService,
                            FriendContract.View view) {
         this.remoteDataSource = remoteDataSource;
+        this.firebaseUserService = firebaseUserService;
         this.view = view;
     }
 
     @Override
-    public void getFriends() {
-        if (view == null){
+    public void getFriends(String userID) {
+/*        if (view !=null){
             return;
-        }
+        }*/
 
         view.setProgressBar(true);
-        firebaseAuth = FirebaseAuth.getInstance();
-        String userID = firebaseAuth.getCurrentUser().getUid();
+
         remoteDataSource.getFriendList(userID, new DataSource.GetFriendListCallback() {
 
             @Override
@@ -65,16 +64,13 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
     }
 
     @Override
-    public void getFavoriteFreinds() {
-        if (view == null){
+    public void getFavoriteFreinds(String userID) {
+        if (view!=null){
             return;
         }
 
-
-
         view.setProgressBar(true);
-        firebaseAuth = FirebaseAuth.getInstance();
-        String userID = firebaseAuth.getCurrentUser().getUid();
+
         remoteDataSource.getFavoriteList(userID, new DataSource.GetFavoriteListCallback() {
             @Override
             public void onSuccess(List<User> users) {
@@ -85,16 +81,10 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             }
 
             @Override
-            public void onListEmpty() {
-                view.showFavoriteFriends(null);
-            }
-
-            @Override
             public void onFailure(Throwable throwable) {
                 if (view != null){
                     view.setProgressBar(false);
                     view.showToastMessage("Something went wrong!");
-                    view.showFavoriteFriends(null);
                 }
             }
 
