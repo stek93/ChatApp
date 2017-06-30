@@ -92,9 +92,10 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Conversation conversation = null;
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                /*for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     conversation = snapshot.getValue(Conversation.class);
-                }
+                }*/
+                conversation = dataSnapshot.getValue(Conversation.class);
                 callback.onSuccess(conversation);
             }
 
@@ -177,7 +178,12 @@ public class RemoteDataSource extends DataSource {
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getChildrenCount()==0){
+                        callback.onEmptyList();
+                        return;
+                    }
                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                         DatabaseReference userRef = firebaseDatabase.getReference().child(USERS);
                         Query q = userRef.orderByKey().equalTo(snapshot.getKey());
 

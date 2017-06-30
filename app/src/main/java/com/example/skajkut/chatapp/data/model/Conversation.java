@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.data.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,10 +41,12 @@ public class Conversation {
         this.id = id;
     }
 
+    @Exclude
     public Map<String, User> getUsers() {
         return this.users;
     }
 
+    @Exclude
     public void setUsers(Map<String, User> users) {
         this.users = users;
     }

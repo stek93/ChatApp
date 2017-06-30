@@ -81,6 +81,12 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             }
 
             @Override
+            public void onEmptyList() {
+                view.setProgressBar(false);
+                view.showFavoriteFriends(null);
+            }
+
+            @Override
             public void onFailure(Throwable throwable) {
                 if (view != null){
                     view.setProgressBar(false);

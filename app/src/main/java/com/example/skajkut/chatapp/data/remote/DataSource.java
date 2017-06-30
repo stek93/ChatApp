@@ -52,6 +52,8 @@ public abstract class DataSource {
 
         @Override
         void onSuccess(List<User> users);
+
+        void onEmptyList();
     }
 
     public interface GetUserCallback extends GetEntityCallback<User> {

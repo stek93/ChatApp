@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.ui.conversations;
 
+import android.util.Log;
+
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
@@ -38,7 +40,7 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
             @Override
             public void onSuccess(List<String> conversations) {
                 if(view != null) {
-                    view.showConversationsList(getConversations(conversations));
+                    getConversations(conversations);
                     view.setProgressBar(false);
                 }
             }
@@ -47,7 +49,6 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
             public void onFailure(Throwable throwable) {
                 if(view != null) {
                     view.setProgressBar(false);
-                    view.showToastMessage("Something went wrong!");
                 }
             }
 
@@ -59,15 +60,18 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
                 }
             }
 
-            private List<Conversation> getConversations(List<String> conversations) {
+            private void getConversations(final List<String> conversations) {
 
                 final List<Conversation> conversationList = new ArrayList<Conversation>();
 
-                for(String conversationID : conversations) {
+                final String lastConversationId = conversations.get(conversations.size() - 1);
+                for(final String conversationID : conversations) {
                     remoteDataSource.getConversation(conversationID, new DataSource.GetConversationCallback() {
                         @Override
                         public void onSuccess(Conversation conversation) {
                             conversationList.add(conversation);
+                            if (lastConversationId.equals(conversationID))
+                                view.showConversationsList(conversationList);
                         }
 
                         @Override
@@ -86,7 +90,6 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
                     });
                 }
 
-                return conversationList;
             }
         });
     }

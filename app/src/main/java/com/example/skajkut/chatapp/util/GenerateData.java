@@ -6,6 +6,8 @@ import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -99,20 +101,22 @@ public final class GenerateData {
 
 
         //mDatabase.child("users").child(user1ID).setValue(user1);
-        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
+/*        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
             mDatabase.child("favoritefriends").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
         for (Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
              mDatabase.child("friendlist").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
-        }
+        }*/
 
        /* for (User i : user2.getFavoriteList()){
             mDatabase.child("favoritefriends").child(user2.getId()).child(i.getId()).setValue(i);
         }*/
+/*
 
         mDatabase.child("users").child(user1.getId()).setValue(user1);
         mDatabase.child("users").child(user2.getId()).setValue(user2);
         mDatabase.child("users").child(user3.getId()).setValue(user3);
+*/
 
 
         for(Message m : c1.getMessageList()) {
@@ -122,7 +126,9 @@ public final class GenerateData {
         }
 
         mDatabase.child("conversations").child(c1.getId()).child("title").setValue(c1.getTitle());
-        mDatabase.child("conversationlist").child(user1.getId()).setValue(c1.getId());
+        List<String> c = new ArrayList<>();
+        c.add(c1.getId());
+        mDatabase.child("conversationlist").child("fhj3hIqnOkQHgTEkpnVfzj2lQRQ2").setValue(c);
 
     }
 }
