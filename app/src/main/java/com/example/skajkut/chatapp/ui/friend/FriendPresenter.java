@@ -7,6 +7,7 @@ import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -19,22 +20,21 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
     private RemoteDataSource remoteDataSource;
     private FirebaseUserService firebaseUserService;
 
-    public FriendPresenter(RemoteDataSource remoteDataSource, FirebaseUserService firebaseUserService,
+    public FriendPresenter(RemoteDataSource remoteDataSource,
                            FriendContract.View view) {
         this.remoteDataSource = remoteDataSource;
-        this.firebaseUserService = firebaseUserService;
         this.view = view;
     }
 
     @Override
-    public void getFriends(String userID) {
-/*        if (view !=null){
+    public void getFriends() {
+        if (view == null){
             return;
-        }*/
+        }
 
         view.setProgressBar(true);
-
-        remoteDataSource.getFriendList(userID, new DataSource.GetFriendListCallback() {
+        String id = remoteDataSource.getCurrentUser();
+        remoteDataSource.getFriendList(id, new DataSource.GetFriendListCallback() {
 
             @Override
             public void onSuccess(List<User> users) {
@@ -60,18 +60,18 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
                 }
             }
         });
-
     }
 
     @Override
-    public void getFavoriteFreinds(String userID) {
-        if (view!=null){
+    public void getFavoriteFreinds() {
+        if (view==null){
             return;
         }
 
         view.setProgressBar(true);
+        String id = remoteDataSource.getCurrentUser();
 
-        remoteDataSource.getFavoriteList(userID, new DataSource.GetFavoriteListCallback() {
+        remoteDataSource.getFavoriteList(id, new DataSource.GetFavoriteListCallback() {
             @Override
             public void onSuccess(List<User> users) {
                 if (view!=null){
@@ -97,7 +97,6 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             }
         });
     }
-
 
 
 }

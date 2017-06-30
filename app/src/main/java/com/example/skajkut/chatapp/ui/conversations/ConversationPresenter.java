@@ -25,7 +25,7 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
     }
 
     @Override
-    public void getConversations(String userID) {
+    public void getConversations() {
 
         if(view == null) {
             return;
@@ -33,6 +33,7 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
 
         view.setProgressBar(true);
 
+        String userID = remoteDataSource.getCurrentUser();
         remoteDataSource.getConversationList(userID, new DataSource.GetConversationListCallback() {
             @Override
             public void onSuccess(List<String> conversations) {

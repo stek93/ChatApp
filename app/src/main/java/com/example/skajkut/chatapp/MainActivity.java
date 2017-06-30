@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.skajkut.chatapp.ui.conversations.ConversationFragment;
 import com.example.skajkut.chatapp.ui.friend.FriendsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return new FriendsFragment();
                 case 1:
-                    return new ConversationsFragment();
+                    return new ConversationFragment();
                 default:
                     return null;
             }

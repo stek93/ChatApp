@@ -10,7 +10,7 @@
         android:id="@+id/rw_coneversation_list"/>
 
     <ProgressBar
-        android:id="@+id/pb_chat_loading"
+        android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyle"
         android:layout_width="48dp"
         android:layout_height="48dp"

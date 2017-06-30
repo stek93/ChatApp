@@ -50,6 +50,9 @@ public class RemoteDataSource extends DataSource {
         return instance;
     }
 
+    public String getCurrentUser(){
+        return firebaseAuth.getCurrentUser().getUid();
+    }
 
     @Override
     public void getConversationList(String userID, final GetConversationListCallback callback) {
@@ -212,8 +215,6 @@ public class RemoteDataSource extends DataSource {
                     }
                 }
             });
-        }else {
-            callback.onListEmpty();
         }
     }
 

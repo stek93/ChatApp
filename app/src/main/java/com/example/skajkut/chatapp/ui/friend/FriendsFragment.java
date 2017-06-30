@@ -53,6 +53,7 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
 
     private FriendContract.Presenter presenter;
 
+
     @BindView(R.id.rw_friendList) RecyclerView mRecyclerView;
     @BindView(R.id.rw_favoriteList) RecyclerView mFavRecyclerView;
     @BindView(R.id.tv_no_favorites) TextView noFavoritesTextView;
@@ -82,7 +83,6 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
                 LinearLayoutManager.HORIZONTAL, false);
         mFavRecyclerView.setLayoutManager(mFavoritesLayoutManager);
 
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         getFriendList();
         getFavoriteFriends();

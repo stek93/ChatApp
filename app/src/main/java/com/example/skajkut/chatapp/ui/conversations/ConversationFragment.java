@@ -49,11 +49,13 @@ public class ConversationFragment extends BaseView implements ConversationsContr
         super.onCreateView(inflater, container, savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_tab_chats, container, false);
+
         ButterKnife.bind(this, view);
 
         mConversationsLayoutManager = new LinearLayoutManager(getPermission());
         mRecyclerView.setLayoutManager(mConversationsLayoutManager);
 
+        mPresenter.getConversations();
 
         return view;
     }

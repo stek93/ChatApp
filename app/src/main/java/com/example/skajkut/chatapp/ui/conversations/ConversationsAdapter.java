@@ -14,6 +14,7 @@ import com.example.skajkut.chatapp.util.DateTimeFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -88,9 +89,7 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             mMessageTitleTextView.setText(mConversation.getTitle());
             mLastMessageTextView.setText(mConversation.getLastMessage().getText());
             mMessageTimeTextView
-                    .setText(DateTimeFormatter.dateTimeFormatter(mConversation
-                    .getLastMessage()
-                    .getDateTime()));
+                    .setText((CharSequence) new Date());
         }
 
     }

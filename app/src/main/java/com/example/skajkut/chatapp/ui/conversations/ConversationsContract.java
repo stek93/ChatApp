@@ -20,7 +20,7 @@ public interface ConversationsContract {
 
     interface Presenter extends IBasePresenter<View> {
 
-        void getConversations(String userID);
+        void getConversations();
 
     }
 
