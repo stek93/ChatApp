@@ -52,8 +52,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         return users.size();
     }
 
-
-
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView userImageView;

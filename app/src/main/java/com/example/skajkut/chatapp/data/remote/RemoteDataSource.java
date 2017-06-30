@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.data.remote;
 
+import android.os.AsyncTask;
+
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -7,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -106,61 +109,112 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getFriendList(String userID, final GetFriendListCallback callback) {
+    public void getFriendList(final String userID, final GetFriendListCallback callback)  {
         final List<User> userList = new ArrayList<>();
-        databaseReference = firebaseDatabase.getReference()
-                .child(FRIEND_LIST)
+        databaseReference = firebaseDatabase.getReference(FRIEND_LIST)
                 .child(userID);
+        databaseReference.keepSynced(true);
         databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    userList.add(user);
-                }
-                callback.onSuccess(userList);
-            }
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                switch (databaseError.getCode()) {
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
+                        DatabaseReference userRef = firebaseDatabase.getReference().child(USERS);
+                        Query q = userRef.orderByKey().equalTo(snapshot.getKey());
+
+                        q.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                    User u = snap.getValue(User.class);
+                                    userList.add(u);
+                                }
+                                callback.onSuccess(userList);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                switch (databaseError.getCode()) {
+                                    case DatabaseError.NETWORK_ERROR:
+                                        callback.onNetworkFailure();
+                                        break;
+                                    default:
+                                        callback.onFailure(databaseError.toException());
+                                }
+                            }
+                        });
+
+
+                    }
+
                 }
-            }
-        });
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    switch (databaseError.getCode()) {
+                        case DatabaseError.NETWORK_ERROR:
+                            callback.onNetworkFailure();
+                            break;
+                        default:
+                            callback.onFailure(databaseError.toException());
+                    }
+                }
+            });
+        callback.onSuccess(userList);
+
     }
 
     @Override
     public void getFavoriteList(String userID, final GetFavoriteListCallback callback) {
         final List<User> userList = new ArrayList<>();
-        databaseReference = firebaseDatabase.getReference()
-                .child(FAVORITE_FRIENDS)
-                .child(userID);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    userList.add(user);
-                }
-                callback.onSuccess(userList);
-            }
+        databaseReference = firebaseDatabase.getReference(FAVORITE_FRIENDS).child(userID);
+        if (databaseReference!=null) {
+            databaseReference.keepSynced(true);
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        DatabaseReference userRef = firebaseDatabase.getReference().child(USERS);
+                        Query q = userRef.orderByKey().equalTo(snapshot.getKey());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                switch (databaseError.getCode()) {
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
+                        q.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                    User u = snap.getValue(User.class);
+                                    userList.add(u);
+                                }
+                                callback.onSuccess(userList);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                callback.onFailure(null);
+                            }
+                        });
+
+
+                    }
+
                 }
-            }
-        });
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    switch (databaseError.getCode()) {
+                        case DatabaseError.NETWORK_ERROR:
+                            callback.onNetworkFailure();
+                            break;
+                        default:
+                            callback.onFailure(databaseError.toException());
+                    }
+                }
+            });
+        }else {
+            callback.onListEmpty();
+        }
     }
 
     // TODO
@@ -253,9 +307,11 @@ public class RemoteDataSource extends DataSource {
         databaseReference = firebaseDatabase
                 .getReference(USERS);
 
-        String userID = databaseReference.push().getKey();
-        databaseReference.child(userID).setValue(user);
+        String uID = firebaseAuth.getCurrentUser().getUid();
+        databaseReference.child(uID).setValue(user);
         callback.onSuccess(user);
 
+
     }
+
 }

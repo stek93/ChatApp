@@ -27,9 +27,9 @@ public interface FriendContract {
 
     interface Presenter extends IBasePresenter<View> {
 
-        void getFriends(String userID);
+        void getFriends();
 
-        void getFavoriteFreinds(String userID);
+        void getFavoriteFreinds();
     }
 
 }

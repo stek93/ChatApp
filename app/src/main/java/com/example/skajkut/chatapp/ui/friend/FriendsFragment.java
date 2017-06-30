@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.skajkut.chatapp.R;
@@ -54,15 +55,15 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
 
     @BindView(R.id.rw_friendList) RecyclerView mRecyclerView;
     @BindView(R.id.rw_favoriteList) RecyclerView mFavRecyclerView;
+    @BindView(R.id.tv_no_favorites) TextView noFavoritesTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
-        FirebaseUserService firebaseUserService = FirebaseUserService.getInstance();
 
-        presenter = new FriendPresenter(remoteDataSource, firebaseUserService, this);
+        presenter = new FriendPresenter(remoteDataSource,this);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
     }
@@ -83,24 +84,19 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
 
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        checkForUsers();
+        getFriendList();
         getFavoriteFriends();
+
         return view;
     }
 
     private void getFavoriteFriends(){
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser != null) {
-            presenter.getFavoriteFreinds(mFirebaseUser.getUid());
-        }
+        presenter.getFavoriteFreinds();
+
     }
 
-    private void checkForUsers(){
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        if (mFirebaseUser != null) {
-            presenter.getFriends(mFirebaseUser.getUid());
-        }
-
+    private void getFriendList(){
+        presenter.getFriends();
     }
 
     @Override
@@ -111,8 +107,13 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
 
     @Override
     public void showFavoriteFriends(List<User> users) {
-        mFavoritesAdapter = new FavoriteFriendsAdapter(getActivity(), favoriteFriends);
-        mFavRecyclerView.setAdapter(mFavoritesAdapter);
+        if(users!=null && users.size() > 0)  {
+            mFavoritesAdapter = new FavoriteFriendsAdapter(getActivity(), users);
+            mFavRecyclerView.setAdapter(mFavoritesAdapter);
+        }else {
+            noFavoritesTextView.setVisibility(View.VISIBLE);
+            mFavRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -125,10 +126,5 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
         return getActivity();
     }
 
-    @Override
-    public void showToastMessage(String message) {
-        super.showToastMessage(message);
-        Toast.makeText(getPermission(), message, Toast.LENGTH_SHORT).show();
-    }
 }
 
