@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.skajkut.chatapp.MainActivity;
@@ -63,7 +64,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
     @BindView(R.id.l_registration) LinearLayout registrationLayout;
     @BindView(R.id.l_login) LinearLayout loginLayout;
-    @BindView(R.id.l_facebook_google_login) LinearLayout facebookLayout;
+    @BindView(R.id.l_facebook_google_login) RelativeLayout facebookLayout;
     @BindView(R.id.et_firstname) TextInputEditText firstnameEditText;
     @BindView(R.id.et_lastname) TextInputEditText lastnameEditText;
     @BindView(R.id.et_username) TextInputEditText usernameEditText;
@@ -116,7 +117,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
     }
 
-    @OnClick(R.id.btn_google)
+    @OnClick(R.id.btn_google_custom )
     public void onGoogleButtonClick(){
         signInWithGoogle();
     }
