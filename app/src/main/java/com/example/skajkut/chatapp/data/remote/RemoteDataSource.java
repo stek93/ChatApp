@@ -13,7 +13,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Stefan Kajkut on 6/26/2017.
@@ -318,7 +320,42 @@ public class RemoteDataSource extends DataSource {
         databaseReference.child(uID).setValue(user);
         callback.onSuccess(user);
 
+    }
 
+    @Override
+    public void searchUsers(SearchUsersCallback callback, String... params) {
+        // Pod pretpostavkom da korisnik prvo kuca ime, pa onda prezime, zatim email
+        if(params != null && params.length > 0) {
+            String firstname = params[0];
+            String lastname = null;
+            if(params.length > 1)
+                lastname = params[1];
+            String email = null;
+            if(params.length > 2)
+                email = params[2];
+            searchUsersWithParams(callback, firstname, lastname, email);
+        } else {
+            callback.onEmptyList();
+        }
+    }
+
+    private void searchUsersWithParams(SearchUsersCallback callback,
+                                       String firstname, String lastname, String email) {
+        Set<User> users = new HashSet<>();
+        databaseReference = firebaseDatabase
+                .getReference(USERS);
+        Query q = databaseReference.orderByChild("firstname").startAt(firstname).endAt(firstname + "\uf8ff");
+        q.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

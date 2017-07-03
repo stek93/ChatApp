@@ -127,7 +127,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
-    private void initFacebook(View view) {
+    public void initFacebook(View view) {
         mFacebookButton.setReadPermissions("email", "public_profile");
         mFacebookButton.setFragment(this);
         mFacebookButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {

@@ -18,7 +18,6 @@ import java.util.List;
 public class FriendPresenter  extends BasePresenter<FriendContract.View> implements FriendContract.Presenter{
 
     private RemoteDataSource remoteDataSource;
-    private FirebaseUserService firebaseUserService;
 
     public FriendPresenter(RemoteDataSource remoteDataSource,
                            FriendContract.View view) {
