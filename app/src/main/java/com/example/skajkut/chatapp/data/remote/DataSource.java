@@ -21,7 +21,8 @@ public abstract class DataSource {
     public abstract void getAllUsers(GetUsersCallback callback);
     public abstract void createUser(String firstname, String lastname, String username,
                                     String email, String password, AddUserCallback callback);
-    public abstract void createUserFromProvider(String firstname, String lastname, String email, String photoUrl, AddUserFromProviderCallback callback);
+    public abstract void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback);
+    public abstract void searchUsers(SearchUsersCallback callback, String... params);
 
     public interface GetEntityCallback<T> {
         void onSuccess(T classType);
@@ -35,8 +36,6 @@ public abstract class DataSource {
 
         @Override
         void onSuccess(List<String> conversations);
-
-        void onEmptyList();
     }
 
     public interface GetConversationCallback extends GetEntityCallback<Conversation> {
@@ -83,4 +82,12 @@ public abstract class DataSource {
          void onSuccess(User user);
      }
 
+     public interface SearchUsersCallback extends GetEntityCallback<List<User>> {
+
+         @Override
+         void onSuccess(List<User> users);
+
+         void onEmptyList();
+
+     }
 }

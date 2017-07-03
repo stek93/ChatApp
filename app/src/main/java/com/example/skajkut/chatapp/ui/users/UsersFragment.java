@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.skajkut.chatapp.R;
@@ -14,6 +15,7 @@ import com.example.skajkut.chatapp.util.mvp.BaseView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 /**
@@ -25,6 +27,9 @@ public class UsersFragment extends BaseView implements UsersContract.View {
 
     @BindView(R.id.et_search_users)
     EditText mSearchUsers;
+
+    @BindView(R.id.button2)
+    Button btn;
 
     private UsersContract.Presenter mPresenter;
 
@@ -47,10 +52,16 @@ public class UsersFragment extends BaseView implements UsersContract.View {
         return view;
     }
 
-    @OnTextChanged(R.id.et_search_users)
+    /*@OnTextChanged(R.id.et_search_users)
     public void onTextChanged() {
         String[] params = mSearchUsers
                 .getText().toString().split(" ");
+        onFindUsers(params);
+    }*/
+
+    @OnClick(R.id.button2)
+    public void cick() {
+        String[] params = mSearchUsers.getText().toString().split(" ");
         onFindUsers(params);
     }
 
