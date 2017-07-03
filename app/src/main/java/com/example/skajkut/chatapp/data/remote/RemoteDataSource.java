@@ -1,6 +1,7 @@
 package com.example.skajkut.chatapp.data.remote;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.User;
@@ -344,23 +345,102 @@ public class RemoteDataSource extends DataSource {
         }
     }
 
-    private void searchUsersWithParams(SearchUsersCallback callback,
+    private void searchUsersWithParams(final SearchUsersCallback callback,
                                        String firstname, String lastname, String email) {
-        Set<User> users = new HashSet<>();
+        final Set<User> users = new HashSet<>();
         databaseReference = firebaseDatabase
                 .getReference(USERS);
-        Query q = databaseReference.orderByChild("firstname").startAt(firstname).endAt(firstname + "\uf8ff");
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        final Integer[] counter = {0};
+
+        Query qFirstname = databaseReference.orderByChild("firstname").startAt(firstname)
+                .endAt(firstname + "\uf8ff");
+        qFirstname.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println();
+                User user = null;
+                try {
+                    user = dataSnapshot.getValue(User.class);
+                    users.add(user);
+                } catch (Exception e) {
+                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                } finally {
+                    counter[0]++;
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                switch (DatabaseError.NETWORK_ERROR){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                        counter[0]++;
+                }
             }
         });
+
+        Query qLastname = databaseReference.orderByChild("lastname").startAt(lastname)
+                .endAt(lastname + "\uf8ff");
+        qLastname.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = null;
+                try {
+                    user = dataSnapshot.getValue(User.class);
+                    users.add(user);
+                } catch (Exception e) {
+                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                } finally {
+                    counter[0]++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (DatabaseError.NETWORK_ERROR){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                        counter[0]++;
+                }
+            }
+        });
+
+        Query qEmail = databaseReference.orderByChild("email").startAt(email)
+                .endAt(email + "\uf8ff");
+        qEmail.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = null;
+                try {
+                    user = dataSnapshot.getValue(User.class);
+                    users.add(user);
+                } catch (Exception e) {
+                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                } finally {
+                    counter[0]++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                switch (DatabaseError.NETWORK_ERROR){
+                    case DatabaseError.NETWORK_ERROR:
+                        callback.onNetworkFailure();
+                        break;
+                    default:
+                        callback.onFailure(databaseError.toException());
+                        counter[0]++;
+                }
+            }
+        });
+
+        callback.onSuccess(new ArrayList<User>(users));
     }
 */
     @Override
