@@ -37,6 +37,7 @@ public class RemoteDataSource extends DataSource {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private Integer[] counter = {0};
 
     private RemoteDataSource() {
         super();
@@ -328,10 +329,10 @@ public class RemoteDataSource extends DataSource {
         // Pod pretpostavkom da korisnik prvo kuca ime, pa onda prezime, zatim email
         if(params != null && params.length > 0) {
             String firstname = params[0];
-            String lastname = null;
+            String lastname = "===";
             if(params.length > 1)
                 lastname = params[1];
-            String email = null;
+            String email = "===";
             if(params.length > 2)
                 email = params[2];
             searchUsersWithParams(callback, firstname, lastname, email);
@@ -346,22 +347,24 @@ public class RemoteDataSource extends DataSource {
         databaseReference = firebaseDatabase
                 .getReference(USERS);
 
-        final Integer[] counter = {0};
-
         Query qFirstname = databaseReference.orderByChild("firstname").startAt(firstname)
                 .endAt(firstname + "\uf8ff");
         qFirstname.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
+                //User user = null;
+                for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                    try {
+                        User user = snap.getValue(User.class);
+                        user.setId(snap.getKey());
+                        users.add(user);
+                    } catch (Exception e) {
+                        Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                    }
                 }
+                counter[0]++;
+
+                checkIfAllPassed(callback, users);
             }
 
             @Override
@@ -374,6 +377,8 @@ public class RemoteDataSource extends DataSource {
                         callback.onFailure(databaseError.toException());
                         counter[0]++;
                 }
+
+                checkIfAllPassed(callback, users);
             }
         });
 
@@ -383,14 +388,19 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
+                for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                    try {
+                        user = snap.getValue(User.class);
+                        user.setId(snap.getKey());
+                        users.add(user);
+                    } catch (Exception e) {
+                        Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                    }
                 }
+
+                counter[0]++;
+
+                checkIfAllPassed(callback, users);
             }
 
             @Override
@@ -403,6 +413,8 @@ public class RemoteDataSource extends DataSource {
                         callback.onFailure(databaseError.toException());
                         counter[0]++;
                 }
+
+                checkIfAllPassed(callback, users);
             }
         });
 
@@ -412,14 +424,19 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
+                for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                    try {
+                        user = snap.getValue(User.class);
+                        user.setId(snap.getKey());
+                        users.add(user);
+                    } catch (Exception e) {
+                        Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
+                    }
                 }
+
+                counter[0]++;
+
+                checkIfAllPassed(callback, users);
             }
 
             @Override
@@ -432,10 +449,19 @@ public class RemoteDataSource extends DataSource {
                         callback.onFailure(databaseError.toException());
                         counter[0]++;
                 }
+
+                checkIfAllPassed(callback, users);
             }
         });
 
-        callback.onSuccess(new ArrayList<User>(users));
+
+    }
+
+    private void checkIfAllPassed(SearchUsersCallback callback, Set<User> users) {
+        if(counter[0] == 3) {
+            counter[0] = 0;
+            callback.onSuccess(new ArrayList<User>(users));
+        }
     }
 
 }
