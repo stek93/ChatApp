@@ -28,7 +28,7 @@ public class UsersPresenter extends BasePresenter<UsersContract.View>
         remoteDataSource.searchUsers(new DataSource.SearchUsersCallback() {
             @Override
             public void onSuccess(List<User> users) {
-
+                System.out.println();
             }
 
             @Override
