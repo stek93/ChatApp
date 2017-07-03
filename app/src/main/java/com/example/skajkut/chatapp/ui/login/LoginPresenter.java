@@ -181,7 +181,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         String firstname = split[0];
         String lastname = split[1];
 
-        mRemoteDataSource.createUserFromProvider(firstname, lastname, email, photoUrl.toString(),
+        mRemoteDataSource.createUserFromProvider(firstname, lastname, email,
                 new DataSource.AddUserFromProviderCallback() {
             @Override
             public void onSuccess(User user) {

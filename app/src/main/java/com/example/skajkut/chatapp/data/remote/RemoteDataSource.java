@@ -442,7 +442,7 @@ public class RemoteDataSource extends DataSource {
 
         callback.onSuccess(new ArrayList<User>(users));
     }
-*/
+
     @Override
     public void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback) {
         User user = new User(firstname, lastname, email);
