@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by internship007 on 6/29/17.
@@ -35,4 +36,6 @@ public class FirebaseUserService {
     public Task<AuthResult> registerUserWithEmail(String email, String password){
         return firebaseAuth.createUserWithEmailAndPassword(email, password);
     }
+
+
 }

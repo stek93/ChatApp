@@ -59,6 +59,12 @@ public class User {
         this.email = email;
     }
 
+    public User(String firstname, String lastname, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
+
 
     @Exclude
     public String getId() {

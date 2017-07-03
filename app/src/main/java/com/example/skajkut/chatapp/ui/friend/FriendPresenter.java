@@ -1,13 +1,10 @@
 package com.example.skajkut.chatapp.ui.friend;
 
-import android.content.Context;
-
 import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -25,14 +22,13 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
         this.view = view;
     }
 
-    @Override
     public void getFriends() {
         if (view == null){
             return;
         }
 
         view.setProgressBar(true);
-        String id = remoteDataSource.getCurrentUser();
+        String id = remoteDataSource.getCurrentUserID();
         remoteDataSource.getFriendList(id, new DataSource.GetFriendListCallback() {
 
             @Override
@@ -40,6 +36,7 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
                 if(view != null){
                     view.setProgressBar(false);
                     view.showFriendList(users);
+
                 }
             }
 
@@ -58,6 +55,8 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
                     view.showNetworkFailureMessage(true);
                 }
             }
+
+
         });
     }
 
@@ -68,7 +67,7 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
         }
 
         view.setProgressBar(true);
-        String id = remoteDataSource.getCurrentUser();
+        String id = remoteDataSource.getCurrentUserID();
 
         remoteDataSource.getFavoriteList(id, new DataSource.GetFavoriteListCallback() {
             @Override
@@ -102,6 +101,8 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             }
         });
     }
+
+
 
 
 }

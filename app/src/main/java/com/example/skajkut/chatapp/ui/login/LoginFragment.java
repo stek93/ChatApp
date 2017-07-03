@@ -3,6 +3,7 @@ package com.example.skajkut.chatapp.ui.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.skajkut.chatapp.MainActivity;
 import com.example.skajkut.chatapp.R;
+import com.example.skajkut.chatapp.data.local.LocalDataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BaseView;
@@ -61,6 +63,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
     private LoginContract.Presenter presenter;
     private FirebaseUserService firebaseUserService;
+    private LocalDataSource localDataSource;
 
     @BindView(R.id.l_registration) LinearLayout registrationLayout;
     @BindView(R.id.l_login) LinearLayout loginLayout;
@@ -81,7 +84,9 @@ public class LoginFragment extends BaseView implements LoginContract.View,
 
         RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
         FirebaseUserService firebaseUserService = FirebaseUserService.getInstance();
-        presenter = new LoginPresenter(remoteDataSource, this, firebaseUserService); //TODO FirebaseUserService
+        LocalDataSource localDataSource = LocalDataSource.getInstance();
+
+        presenter = new LoginPresenter(remoteDataSource, this, firebaseUserService, localDataSource);
 
         mCallbackManager = CallbackManager.Factory.create();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -181,10 +186,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
                         if (task.isSuccessful()){
-                            FirebaseUser user = mFirebaseAuth.getCurrentUser();
-
-                            Toast.makeText(getActivity(), user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getActivity(), MainActivity.class));
+                            presenter.checkUserRemote();
                         }else{
                             Toast.makeText(getActivity(), "Login failed", Toast.LENGTH_SHORT).show();
                             task.getException();
