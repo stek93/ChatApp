@@ -1,7 +1,9 @@
 package com.example.skajkut.chatapp.ui.login;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.example.skajkut.chatapp.data.local.LocalDataSource;
 import com.example.skajkut.chatapp.data.model.User;
@@ -142,7 +144,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     view.startNewActivity();
                 }else{
                     mLocalDataSource.writeSharedPreferences(view.getPermission(), firebaseUser);
-                    createUserFromProvider(firebaseUser.getDisplayName(), firebaseUser.getEmail());
+                    createUserFromProvider(firebaseUser.getDisplayName(), firebaseUser.getEmail(), firebaseUser.getPhotoUrl());
                     view.startNewActivity();
                 }
             }
@@ -165,7 +167,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         });
        }
 
-    private void createUserFromProvider(String displayName, String email){
+    private void createUserFromProvider(String displayName, String email, Uri photoUrl){
         if (view == null){
             return;
         }
@@ -179,8 +181,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         String firstname = split[0];
         String lastname = split[1];
 
-
-        mRemoteDataSource.createUserFromProvider(firstname, lastname, email,
+        mRemoteDataSource.createUserFromProvider(firstname, lastname, email, photoUrl.toString(),
                 new DataSource.AddUserFromProviderCallback() {
             @Override
             public void onSuccess(User user) {

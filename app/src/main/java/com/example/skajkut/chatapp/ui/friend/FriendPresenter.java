@@ -56,8 +56,8 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
                 }
             }
 
-
         });
+
     }
 
     @Override

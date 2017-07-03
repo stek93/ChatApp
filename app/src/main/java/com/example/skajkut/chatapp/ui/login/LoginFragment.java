@@ -68,6 +68,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
     @BindView(R.id.l_registration) LinearLayout registrationLayout;
     @BindView(R.id.l_login) LinearLayout loginLayout;
     @BindView(R.id.l_facebook_google_login) RelativeLayout facebookLayout;
+    @BindView(R.id.l_image_holder) RelativeLayout imageHolderLayout;
     @BindView(R.id.et_firstname) TextInputEditText firstnameEditText;
     @BindView(R.id.et_lastname) TextInputEditText lastnameEditText;
     @BindView(R.id.et_username) TextInputEditText usernameEditText;
@@ -202,9 +203,11 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         final String password = passwordLogin.getText().toString();
 
         if(email.length() == 0) {
-            emailLogin.setError("Email is required!");
+            Toast.makeText(getPermission(), "Email is required!", Toast.LENGTH_SHORT).show();
+            return;
         } else if(password.length() == 0) {
-            passwordLogin.setError("Password is required");
+            Toast.makeText(getPermission(), "Password is required!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         presenter.loginViaEmail(email, password);
@@ -221,18 +224,23 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         final String email = emailEditText.getText().toString();
 
         if (firstname.length() == 0){
-            firstnameEditText.setError("First name is required!");
+            Toast.makeText(getPermission(), "First name is required", Toast.LENGTH_SHORT).show();
+            return;
         }
         else if(lastname.length() == 0){
-            lastnameEditText.setError("Last name is required!");
+            Toast.makeText(getPermission(), "Last name is required!", Toast.LENGTH_SHORT).show();
+            return;
         }
         else if(username.length() == 0){
-            usernameEditText.setError("Username is required!");
+            Toast.makeText(getPermission(), "Username is required!", Toast.LENGTH_SHORT).show();
+            return;
         }
         else if(password.length() <= 5){
-            passwordEditText.setError("Password must be longer than 5 characters!");
+            Toast.makeText(getPermission(), "Password must be longer than 5 characters!", Toast.LENGTH_SHORT).show();
+            return;
         }else if(email.length() == 0){
-            emailEditText.setError("Email is required!");
+            Toast.makeText(getPermission(), "Email is required!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         presenter.registration(firstname, lastname, username, password, email);
@@ -278,6 +286,7 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         if(show){
             registrationLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
+            imageHolderLayout.setVisibility(View.GONE);
         }
     }
 
@@ -286,6 +295,8 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         if (show){
             loginLayout.setVisibility(View.VISIBLE);
             facebookLayout.setVisibility(View.GONE);
+            imageHolderLayout.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -295,6 +306,8 @@ public class LoginFragment extends BaseView implements LoginContract.View,
         if (show){
             facebookLayout.setVisibility(View.VISIBLE);
             registrationLayout.setVisibility(View.GONE);
+            imageHolderLayout.setVisibility(View.VISIBLE);
+
 
         }
     }

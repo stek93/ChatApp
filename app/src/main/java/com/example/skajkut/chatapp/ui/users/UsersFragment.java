@@ -33,7 +33,7 @@ public class UsersFragment extends BaseView implements UsersContract.View {
         super.onCreate(savedInstanceState);
 
         RemoteDataSource remoteDataSource = RemoteDataSource.getInstance();
-        mPresenter = new UsersPresenter(remoteDataSource, this);
+        //mPresenter = new UsersPresenter(remoteDataSource, this);
     }
 
     @Override

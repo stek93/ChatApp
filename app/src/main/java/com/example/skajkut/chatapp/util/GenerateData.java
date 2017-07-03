@@ -94,12 +94,12 @@ public final class GenerateData {
         user2.getFriendList().put(user3.getId(), user3.getUsername());
 
         for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
-            mDatabase.child("friendlist").child("HmmXC7X6btcJ84sllr4tAB69SUi2").child(user.getKey()).setValue(user.getValue());
+            mDatabase.child("friendlist").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child(user.getKey()).setValue(user.getValue());
 
         }
 
         for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
-            mDatabase.child("favoritefriends").child("HmmXC7X6btcJ84sllr4tAB69SUi2").child(user.getKey()).setValue(user.getValue());
+            mDatabase.child("favoritefriends").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child(user.getKey()).setValue(user.getValue());
         }
 
 

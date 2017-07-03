@@ -44,6 +44,11 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
             }
 
             @Override
+            public void onEmptyList() {
+
+            }
+
+            @Override
             public void onFailure(Throwable throwable) {
                 if(view != null) {
                     view.setProgressBar(false);
@@ -77,13 +82,6 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
                                 view.showConversationsList(conversationList);
                         }
 
-                        @Override
-                        public void onEmptyList() {
-                            if(view != null) {
-                                view.setProgressBar(false);
-                                view.showConversationsList(null);
-                            }
-                        }
 
                         @Override
                         public void onFailure(Throwable throwable) {

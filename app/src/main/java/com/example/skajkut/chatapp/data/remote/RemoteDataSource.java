@@ -140,6 +140,7 @@ public class RemoteDataSource extends DataSource {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                                     User u = snap.getValue(User.class);
+                                    u.setId(snap.getKey());
                                     userList.add(u);
                                 }
                                 callback.onSuccess(userList);
@@ -327,125 +328,12 @@ public class RemoteDataSource extends DataSource {
         callback.onSuccess(user);
 
     }
-/*
+
+
     @Override
-    public void searchUsers(SearchUsersCallback callback, String... params) {
-        // Pod pretpostavkom da korisnik prvo kuca ime, pa onda prezime, zatim email
-        if(params != null && params.length > 0) {
-            String firstname = params[0];
-            String lastname = null;
-            if(params.length > 1)
-                lastname = params[1];
-            String email = null;
-            if(params.length > 2)
-                email = params[2];
-            searchUsersWithParams(callback, firstname, lastname, email);
-        } else {
-            callback.onEmptyList();
-        }
-    }
-
-    private void searchUsersWithParams(final SearchUsersCallback callback,
-                                       String firstname, String lastname, String email) {
-        final Set<User> users = new HashSet<>();
-        databaseReference = firebaseDatabase
-                .getReference(USERS);
-
-        final Integer[] counter = {0};
-
-        Query qFirstname = databaseReference.orderByChild("firstname").startAt(firstname)
-                .endAt(firstname + "\uf8ff");
-        qFirstname.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                switch (DatabaseError.NETWORK_ERROR){
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
-                        counter[0]++;
-                }
-            }
-        });
-
-        Query qLastname = databaseReference.orderByChild("lastname").startAt(lastname)
-                .endAt(lastname + "\uf8ff");
-        qLastname.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                switch (DatabaseError.NETWORK_ERROR){
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
-                        counter[0]++;
-                }
-            }
-        });
-
-        Query qEmail = databaseReference.orderByChild("email").startAt(email)
-                .endAt(email + "\uf8ff");
-        qEmail.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = null;
-                try {
-                    user = dataSnapshot.getValue(User.class);
-                    users.add(user);
-                } catch (Exception e) {
-                    Log.d(RemoteDataSource.class.getName(), "Error " + e.getMessage());
-                } finally {
-                    counter[0]++;
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                switch (DatabaseError.NETWORK_ERROR){
-                    case DatabaseError.NETWORK_ERROR:
-                        callback.onNetworkFailure();
-                        break;
-                    default:
-                        callback.onFailure(databaseError.toException());
-                        counter[0]++;
-                }
-            }
-        });
-
-        callback.onSuccess(new ArrayList<User>(users));
-    }
-*/
-    @Override
-    public void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback) {
+    public void createUserFromProvider(String firstname, String lastname, String email, String photoUrl, AddUserFromProviderCallback callback) {
         User user = new User(firstname, lastname, email);
+//        user.setPhoto(photoUrl);
         databaseReference =
                 firebaseDatabase.getReference(USERS);
         String uID = firebaseAuth.getCurrentUser().getUid();

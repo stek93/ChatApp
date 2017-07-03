@@ -12,6 +12,7 @@ import java.util.List;
  * For more information contact me on stefan.kajkutsf@gmail.com .
  */
 
+/*
 public class UsersPresenter extends BasePresenter<UsersContract.View>
         implements UsersContract.Presenter {
 
@@ -48,3 +49,4 @@ public class UsersPresenter extends BasePresenter<UsersContract.View>
         }, params);
     }
 }
+*/
