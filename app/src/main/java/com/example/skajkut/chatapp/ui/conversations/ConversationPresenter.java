@@ -64,6 +64,11 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
 
                 final List<Conversation> conversationList = new ArrayList<Conversation>();
 
+                if(conversations.size() <= 0) {
+                    view.showConversationsList(null);
+                    return;
+                }
+
                 final String lastConversationId = conversations.get(conversations.size() - 1);
                 for(final String conversationID : conversations) {
                     remoteDataSource.getConversation(conversationID, new DataSource.GetConversationCallback() {
@@ -72,6 +77,14 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
                             conversationList.add(conversation);
                             if (lastConversationId.equals(conversationID))
                                 view.showConversationsList(conversationList);
+                        }
+
+                        @Override
+                        public void onEmptyList() {
+                            if(view != null) {
+                                view.setProgressBar(false);
+                                view.showConversationsList(null);
+                            }
                         }
 
                         @Override

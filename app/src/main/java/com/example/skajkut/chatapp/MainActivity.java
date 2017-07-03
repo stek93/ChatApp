@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.example.skajkut.chatapp.ui.conversations.ConversationFragment;
 import com.example.skajkut.chatapp.ui.friend.FriendsFragment;
+import com.example.skajkut.chatapp.ui.users.UsersFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,15 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
     }
 
@@ -120,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
                     return new FriendsFragment();
                 case 1:
                     return new ConversationFragment();
+                case 2:
+                    return new UsersFragment();
                 default:
                     return null;
             }
@@ -128,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
 
         @Override
@@ -138,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                     return "FRIENDS";
                 case 1:
                     return "CHATS";
+                case 2:
+                    return "USERS";
                 default:
                     return null;
             }
