@@ -1,5 +1,7 @@
 package com.example.skajkut.chatapp.ui.login;
 
+import android.content.Context;
+
 import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.util.mvp.IBasePresenter;
 import com.example.skajkut.chatapp.util.mvp.IBaseView;
@@ -37,7 +39,7 @@ public interface LoginContract {
         void registration(String firstname, String lastname, String username,
                           String password, String email);
 
-
+        void checkUserRemote();
 
     }
 }

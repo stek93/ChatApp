@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,8 +55,12 @@ public class RemoteDataSource extends DataSource {
         return instance;
     }
 
-    public String getCurrentUser(){
+    public String getCurrentUserID(){
         return firebaseAuth.getCurrentUser().getUid();
+    }
+
+    public FirebaseUser getCurrentUser(){
+        return firebaseAuth.getCurrentUser();
     }
 
     @Override
@@ -125,6 +130,7 @@ public class RemoteDataSource extends DataSource {
         databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+
                     for (final DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                         DatabaseReference userRef = firebaseDatabase.getReference().child(USERS);
@@ -155,9 +161,7 @@ public class RemoteDataSource extends DataSource {
 
 
                     }
-
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     switch (databaseError.getCode()) {
@@ -196,6 +200,7 @@ public class RemoteDataSource extends DataSource {
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
                                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
+
                                     User u = snap.getValue(User.class);
                                     userList.add(u);
                                 }
@@ -323,7 +328,7 @@ public class RemoteDataSource extends DataSource {
         callback.onSuccess(user);
 
     }
-
+/*
     @Override
     public void searchUsers(SearchUsersCallback callback, String... params) {
         // Pod pretpostavkom da korisnik prvo kuca ime, pa onda prezime, zatim email
@@ -462,6 +467,16 @@ public class RemoteDataSource extends DataSource {
             counter[0] = 0;
             callback.onSuccess(new ArrayList<User>(users));
         }
+    }
+*/
+    @Override
+    public void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback) {
+        User user = new User(firstname, lastname, email);
+        databaseReference =
+                firebaseDatabase.getReference(USERS);
+        String uID = firebaseAuth.getCurrentUser().getUid();
+        databaseReference.child(uID).setValue(user);
+        callback.onSuccess(user);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.skajkut.chatapp.ui.friend;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,7 +55,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private ImageView userImageView;
+        private CardView userImageView;
         private TextView emailTextView;
         private TextView fullnameTextView;
         private ImageView favoriteIcon;
@@ -76,7 +77,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             mFirebaseDatabase = FirebaseDatabase.getInstance();
             mFirebaseAuth = FirebaseAuth.getInstance();
 
-            userImageView = (ImageView) itemView.findViewById(R.id.iv_cw_userImage);
+            userImageView = (CardView) itemView.findViewById(R.id.iv_cw_userImage);
             emailTextView = (TextView) itemView.findViewById(R.id.tv_cw_email);
             fullnameTextView = (TextView) itemView.findViewById(R.id.tv_cw_fullname);
             favoriteIcon = (ImageView) itemView.findViewById(R.id.iv_favoriteIcon);

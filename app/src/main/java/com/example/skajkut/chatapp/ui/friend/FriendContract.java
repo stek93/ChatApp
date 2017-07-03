@@ -21,15 +21,21 @@ public interface FriendContract {
 
         void showFavoriteFriends(List<User> users);
 
+        void showNoFriendMessage(List<User> users);
+
         void showFavoriteIcon();
 
     }
 
     interface Presenter extends IBasePresenter<View> {
 
+        //void checkFriends();
+
         void getFriends();
 
         void getFavoriteFreinds();
+
+
     }
 
 }

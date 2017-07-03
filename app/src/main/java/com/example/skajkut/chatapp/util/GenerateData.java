@@ -93,9 +93,19 @@ public final class GenerateData {
         user2.getFriendList().put(user1.getId(), user1.getUsername());
         user2.getFriendList().put(user3.getId(), user3.getUsername());
 
+        for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
+            mDatabase.child("friendlist").child("HmmXC7X6btcJ84sllr4tAB69SUi2").child(user.getKey()).setValue(user.getValue());
 
+        }
+
+        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
+            mDatabase.child("favoritefriends").child("HmmXC7X6btcJ84sllr4tAB69SUi2").child(user.getKey()).setValue(user.getValue());
+        }
+
+
+/*
         user2.getFavoriteList().put(user1.getId(), user1.getUsername());
-        user2.getFavoriteList().put(user3.getId(), user3.getUsername());
+        user2.getFavoriteList().put(user3.getId(), user3.getUsername());*/
         //mDatabase.setValue("users");
 
 
@@ -104,9 +114,9 @@ public final class GenerateData {
 /*        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
             mDatabase.child("favoritefriends").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
         }
-        for (Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
+         (Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
              mDatabase.child("friendlist").child(user2.getId()).child(user.getKey()).setValue(user.getValue());
-        }*/
+        }
 
        /* for (User i : user2.getFavoriteList()){
             mDatabase.child("favoritefriends").child(user2.getId()).child(i.getId()).setValue(i);
@@ -119,7 +129,7 @@ public final class GenerateData {
 */
 
 
-        for(Message m : c1.getMessageList()) {
+/*        for(Message m : c1.getMessageList()) {
             mDatabase.child("conversations").child(c1.getId()).child("messages").setValue(m);
             //mDatabase.child("conversations").child(c1.getId()).child("users").updateChildren(c1.getUsers());
             mDatabase.child("conversations").child(c1.getId()).child("lastMessage").setValue(m);
@@ -128,7 +138,7 @@ public final class GenerateData {
         mDatabase.child("conversations").child(c1.getId()).child("title").setValue(c1.getTitle());
         List<String> c = new ArrayList<>();
         c.add(c1.getId());
-        mDatabase.child("conversationlist").child("fhj3hIqnOkQHgTEkpnVfzj2lQRQ2").setValue(c);
+        mDatabase.child("conversationlist").child("fhj3hIqnOkQHgTEkpnVfzj2lQRQ2").setValue(c);*/
 
     }
 }

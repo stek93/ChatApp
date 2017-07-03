@@ -3,7 +3,6 @@ package com.example.skajkut.chatapp.ui.friend;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,8 +57,6 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
     @BindView(R.id.rw_friendList) RecyclerView mRecyclerView;
     @BindView(R.id.rw_favoriteList) RecyclerView mFavRecyclerView;
     @BindView(R.id.tv_no_favorites) TextView noFavoritesTextView;
-    @BindView(R.id.fab_add_new_friend)
-    FloatingActionButton mAddNewFriend;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -129,5 +126,10 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
         return getActivity();
     }
 
+
+    @Override
+    public void showNoFriendMessage(List<User> users) {
+
+    }
 }
 

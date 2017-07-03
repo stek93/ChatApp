@@ -1,7 +1,5 @@
 package com.example.skajkut.chatapp.ui.conversations;
 
-import android.util.Log;
-
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
@@ -35,7 +33,7 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
 
         view.setProgressBar(true);
 
-        String userID = remoteDataSource.getCurrentUser();
+        String userID = remoteDataSource.getCurrentUserID();
         remoteDataSource.getConversationList(userID, new DataSource.GetConversationListCallback() {
             @Override
             public void onSuccess(List<String> conversations) {

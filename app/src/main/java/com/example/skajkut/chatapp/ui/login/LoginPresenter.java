@@ -2,9 +2,8 @@ package com.example.skajkut.chatapp.ui.login;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
-import com.example.skajkut.chatapp.MainActivity;
+import com.example.skajkut.chatapp.data.local.LocalDataSource;
 import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.data.remote.DataSource;
 import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
@@ -13,6 +12,7 @@ import com.example.skajkut.chatapp.util.mvp.BasePresenter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 
 /**
@@ -24,12 +24,14 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private RemoteDataSource mRemoteDataSource;
     private FirebaseUserService firebaseUserService;
+    private LocalDataSource mLocalDataSource;
 
     public LoginPresenter(RemoteDataSource mRemoteDataSource,
-                          LoginContract.View view, FirebaseUserService firebaseUserService) {
+                          LoginContract.View view, FirebaseUserService firebaseUserService, LocalDataSource mLocalDataSource) {
         this.mRemoteDataSource = mRemoteDataSource;
         this.view = view;
         this.firebaseUserService = firebaseUserService;
+        this.mLocalDataSource = mLocalDataSource;
     }
 
     @Override
@@ -70,7 +72,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void registration(final String firstname, final String lastname, final String username, final String password, final String email) {
-        try{firebaseUserService.registerUserWithEmail(email, password)
+        firebaseUserService.registerUserWithEmail(email, password)
                 .addOnCompleteListener((Activity) view.getPermission(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -78,13 +80,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                             view.showLoginFailed();
                         }else{
                             createUser(firstname, lastname, username, password, email);
-                            //view.startNewActivity();
+                            view.startNewActivity();
                         }
                     }
                 });
-    }catch (Exception e){
-            e.printStackTrace();
-        }
 
     }
 
@@ -122,4 +121,89 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         });
     }
 
+    @Override
+    public void checkUserRemote() {
+
+        if (view == null){
+            return;
+        }
+
+        view.setProgressBar(true);
+
+        final String userID = mRemoteDataSource.getCurrentUserID();
+        final FirebaseUser firebaseUser = mRemoteDataSource.getCurrentUser();
+
+        mRemoteDataSource.getUserByID(userID, new DataSource.GetUserCallback() {
+
+            @Override
+            public void onSuccess(User user) {
+                view.setProgressBar(false);
+                if (user != null) {
+                    view.startNewActivity();
+                }else{
+                    mLocalDataSource.writeSharedPreferences(view.getPermission(), firebaseUser);
+                    createUserFromProvider(firebaseUser.getDisplayName(), firebaseUser.getEmail());
+                    view.startNewActivity();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                if (view != null){
+                    view.setProgressBar(false);
+                    view.showToastMessage("Something went wrong!");
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
+            }
+        });
+       }
+
+    private void createUserFromProvider(String displayName, String email){
+        if (view == null){
+            return;
+        }
+
+        view.setProgressBar(true);
+
+        String[] split = new String[0];
+        if (displayName != null) {
+            split = displayName.split("\\s+");
+        }
+        String firstname = split[0];
+        String lastname = split[1];
+
+
+        mRemoteDataSource.createUserFromProvider(firstname, lastname, email,
+                new DataSource.AddUserFromProviderCallback() {
+            @Override
+            public void onSuccess(User user) {
+                if (view != null){
+                    view.setProgressBar(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
+            }
+        });
+    }
 }
