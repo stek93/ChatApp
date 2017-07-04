@@ -48,6 +48,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(FriendsAdapter.ViewHolder holder, int position) {
+        /*
+
+        User x = RemoteDataSource.getInstance().getCurrentUser();
+
+         */
         User user = users.get(position);
         holder.emailTextView.setText(user.getUsername());
         holder.fullnameTextView.setText(user.getFirstname() + " " + user.getLastname());
@@ -55,6 +60,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             Picasso.with(mContext).load(user.getPhoto()).into(holder.userImageView);
         }
         for(User u : favoriteFriends){
+/*
+            if(x.getFavouriteFriends().get(u.getId()) != mill)
+*/
             if (u.getEmail().equals(user.getEmail())){
                 Picasso.with(mContext).load(R.drawable.favfullstar);
             }else{
