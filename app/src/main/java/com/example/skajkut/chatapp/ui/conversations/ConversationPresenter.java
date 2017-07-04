@@ -45,7 +45,9 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
 
             @Override
             public void onEmptyList() {
+                if(view != null) {
 
+                }
             }
 
             @Override
