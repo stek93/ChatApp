@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.util.GenerateData;
@@ -54,6 +55,7 @@ public class LoginActivity extends AppCompatActivity   {
                     .add(R.id.fragment_login, fragment)
                     .commit();
         }
+        System.out.println("CURRENT USER "+ FirebaseAuth.getInstance().getCurrentUser());
     }
 
 

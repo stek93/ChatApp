@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.data.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class FavoriteFriendsAdapter extends RecyclerView.Adapter<FavoriteFriends
             holder.username.setText(user.getUsername());
         }else{
             holder.username.setText(user.getFirstname());
+        }
+        if (user.getPhoto()!=null) {
+            Picasso.with(mContext).load(user.getPhoto()).into(holder.userImage);
         }
 
     }

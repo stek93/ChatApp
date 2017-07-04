@@ -21,9 +21,9 @@ public interface FriendContract {
 
         void showFavoriteFriends(List<User> users);
 
+
         void showNoFriendMessage(List<User> users);
 
-        void showFavoriteIcon();
 
     }
 
@@ -34,6 +34,8 @@ public interface FriendContract {
         void getFriends();
 
         void getFavoriteFreinds();
+
+        void favoriteFriendsListener();
 
     }
 

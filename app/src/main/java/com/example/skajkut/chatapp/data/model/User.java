@@ -44,13 +44,6 @@ public class User {
         this.conversationList = conversations;
     }
 
-    public User(String id, String firstname, String lastname, String email) {
-        super();
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-    }
 
     public User(String firstname, String lastname, String username, String password, String email) {
         super();
@@ -61,11 +54,12 @@ public class User {
         this.email = email;
     }
 
-    public User(String firstname, String lastname, String email) {
+    public User(String firstname, String lastname, String email, String photoUrl) {
         super();
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.photo = photoUrl;
     }
 
 

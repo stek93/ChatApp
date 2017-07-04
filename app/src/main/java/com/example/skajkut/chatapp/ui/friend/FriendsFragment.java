@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
  * Contact me on stefan.kajkutsf@gmail.com.
  */
 
-public class FriendsFragment extends BaseView implements FriendContract.View {
+public class FriendsFragment extends BaseView implements FriendContract.View{
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -73,10 +74,10 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
                 LinearLayoutManager.HORIZONTAL, false);
         mFavRecyclerView.setLayoutManager(mFavoritesLayoutManager);
 
-
         getFriendList();
         getFavoriteFriends();
 
+        presenter.favoriteFriendsListener();
         return view;
     }
 
@@ -95,6 +96,7 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
     public void showFriendList(List<User> users, User currentUser) {
         mFriendsAdapter = new FriendsAdapter(getActivity(), users, currentUser);
         mRecyclerView.setAdapter(mFriendsAdapter);
+        mFriendsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -106,12 +108,10 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
             noFavoritesTextView.setVisibility(View.VISIBLE);
             mFavRecyclerView.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void showFavoriteIcon() {
+        mFavoritesAdapter.notifyDataSetChanged();
 
     }
+
 
     @Override
     public Context getPermission() {
@@ -123,5 +123,6 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
     public void showNoFriendMessage(List<User> users) {
 
     }
+
 }
 

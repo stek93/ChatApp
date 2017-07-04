@@ -80,27 +80,29 @@ public final class GenerateData {
         c1.getMessageList().add(m2);
 
         user1.getConversationList().add(c1);
-/*
+
 
         String c_id = mDatabase.push().getKey();
-        mDatabase.child("conversations").child(c_id).setValue(c1);*/
+        mDatabase.child("conversations").child(c_id).setValue(c1);
 
         //user1.setId(mDatabase.push().getKey());
         //String user1ID = mDatabase.push().getKey();
         //String user2ID = mDatabase.push().getKey();
         //String user3ID = mDatabase.push().getKey();
 
-        /*user2.getFriendList().put(user1.getId(), user1.getUsername());
-        user2.getFriendList().put(user3.getId(), user3.getUsername());
-
+/*        user2.getFriendList().put(user1.getId(), user1.getUsername());
+        user2.getFriendList().put(user3.getId(), user3.getUsername());*/
+/*
         for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
             mDatabase.child("friendlist").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child(user.getKey()).setValue(user.getValue());
 
-        }
-
-        for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
-            mDatabase.child("favoritefriends").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child(user.getKey()).setValue(user.getValue());
         }*/
+
+
+        mDatabase.child("friendlist").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child("-KnIiEneW8DHOqdWGoUC").setValue("stek");
+        mDatabase.child("friendlist").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child("-KnIiEnhsL4W8944e5xq").setValue("djoks");
+        mDatabase.child("friendlist").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child("mgP3NgNpZbMfbc02efWFA60dRsD2").setValue("nikola");
+        mDatabase.child("favoritefriends").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child("mgP3NgNpZbMfbc02efWFA60dRsD2").setValue("nikola");
 
 
 /*

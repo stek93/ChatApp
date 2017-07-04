@@ -1,9 +1,11 @@
 package com.example.skajkut.chatapp.data.remote;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.skajkut.chatapp.data.model.Conversation;
+import com.example.skajkut.chatapp.data.model.Message;
 import com.example.skajkut.chatapp.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,6 +17,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +40,8 @@ public class RemoteDataSource extends DataSource {
     private static final String FRIEND_LIST = "friendlist";
     private static final String USERS = "users";
     private static final String MESSAGES = "messages";
+    private static final String LASTMESSAGE = "lastMessage";
+
 
 
     private FirebaseDatabase firebaseDatabase;
@@ -132,6 +139,7 @@ public class RemoteDataSource extends DataSource {
         final List<User> userList = new ArrayList<>();
         databaseReference = firebaseDatabase.getReference(FRIEND_LIST)
                 .child(userID);
+
         databaseReference.keepSynced(true);
         databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -262,7 +270,9 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                user.setId(dataSnapshot.getKey());
+                if (user != null) {
+                    user.setId(dataSnapshot.getKey());
+                }
                 callback.onSuccess(user);
             }
 
@@ -375,8 +385,9 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback) {
-        User user = new User(firstname, lastname, email);
+    public void createUserFromProvider(String firstname, String lastname, String email, Uri photoUrl, AddUserFromProviderCallback callback) {
+        String photo = photoUrl.toString();
+        User user = new User(firstname, lastname, email, photo);
         databaseReference =
                 firebaseDatabase.getReference(USERS);
         String uID = firebaseAuth.getCurrentUser().getUid();
@@ -463,4 +474,60 @@ public class RemoteDataSource extends DataSource {
         }
     }*/
 
+    @Override
+    public void addFavorite(User user, AddFavoriteCallback callback) {
+        databaseReference = firebaseDatabase.getReference(FAVORITE_FRIENDS);
+        String currentUser = getCurrentUserID();
+        databaseReference.child(currentUser).child(user.getId()).removeValue();
+        callback.onSuccess(user);
+    }
+
+    @Override
+    public void removeFavorite(User user, RemoveFavoriteCallback callback) {
+        databaseReference = firebaseDatabase.getReference(FAVORITE_FRIENDS);
+        String currentUser = getCurrentUserID();
+        databaseReference.child(currentUser).child(user.getId()).setValue(user.getUsername());
+        callback.onSuccess(user);
+    }
+
+    @Override
+    public void getMessages(GetMessagesCallback callback) {
+        List<Message> messages = new ArrayList<>();
+
+        databaseReference = firebaseDatabase.getReference(CONVERSATIONS)
+                .child("key"); //todo fixme please
+    }
+
+    @Override
+    public void sendMessage(String message, SendMessageCallback callback) {
+        List<Message> messages = new ArrayList<>();
+
+        String uID = getCurrentUserID();
+
+        FirebaseUser user = getCurrentUser();
+
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        calendar.get(Calendar.HOUR);
+
+        Message m = new Message();
+        m.setSender(user.getDisplayName());
+        m.setText(message);
+        m.setDateTime(date);
+        messages.add(m);
+
+        databaseReference = firebaseDatabase.getReference(CONVERSATIONS);
+        String cID = databaseReference.push().getKey();
+
+        Conversation c = new Conversation();
+        c.setTitle("Title");
+        c.setId(cID);
+        c.setLastMessage(m);
+        c.setMessageList(messages);
+
+        databaseReference.child(cID).setValue(c);
+        databaseReference.child(cID).child(LASTMESSAGE).setValue(c.getLastMessage());
+        databaseReference.child(cID).child(USERS).setValue(c.getUsers());
+    }
 }

@@ -84,6 +84,7 @@
         android:id="@+id/rw_friendList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="#fff"
         android:layout_marginBottom="117dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"

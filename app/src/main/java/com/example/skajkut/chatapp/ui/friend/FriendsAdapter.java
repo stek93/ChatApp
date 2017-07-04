@@ -1,8 +1,7 @@
 package com.example.skajkut.chatapp.ui.friend;
 
 import android.content.Context;
-import android.media.Image;
-import android.support.v7.widget.CardView;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +11,7 @@ import android.widget.TextView;
 
 import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.data.model.User;
-import com.example.skajkut.chatapp.data.remote.DataSource;
-import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
+import com.example.skajkut.chatapp.ui.conversation.ChatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +20,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by n.sofronovic on 6/22/2017.
@@ -33,7 +30,7 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
     private Context mContext;
     private List<User> users = new ArrayList<>();
-    private List<User> favoriteFriends = new ArrayList<>();
+    private List<User> favoriteFriends;
     private User currentUser;
 
     public FriendsAdapter(Context mContext, List<User> users, User currentUser) {
@@ -72,6 +69,7 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
         return users.size();
     }
 
+
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private ImageView userImageView;
@@ -100,28 +98,34 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
             userImageView = (ImageView) itemView.findViewById(R.id.iv_cw_friendImage);
 
             favoriteIcon.setOnClickListener(this);
+            userImageView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            int position = getAdapterPosition();
+            User user = this.users.get(position);
+
             if (view.getId() == favoriteIcon.getId()){
-                int position = getAdapterPosition();
-                User user = this.users.get(position);
 
                 addToFavorites(user);
+            }else if(view.getId() == userImageView.getId()){
+
+                Intent i = new Intent(mContext, ChatActivity.class);
+                i.putExtra("reciever_id", user.getId());
+                mContext.startActivity(i);
             }
         }
 
 
         private void addToFavorites(User user){
+            favoriteFriends = new ArrayList<User>(currentUser.getFavoriteList().values());
 
             if (currentUser.getFavoriteList().get(user.getId()) != null){
                 mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
                 mUser = FirebaseAuth.getInstance().getCurrentUser();
                 mDatabaseReference.child(mUser.getUid()).child(user.getId()).removeValue();
-                System.out.println(currentUser);
                 currentUser.getFavoriteList().remove(user.getId());
-                System.out.println(currentUser);
 
                 changeFavoriteIcon(false);
 
@@ -129,7 +133,7 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
                 mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
                 mUser = FirebaseAuth.getInstance().getCurrentUser();
                 mDatabaseReference.child(mUser.getUid()).child(user.getId()).setValue(user.getUsername());
-                System.out.println(currentUser);
+                currentUser.getFavoriteList().put(user.getId(), user);
 
                 changeFavoriteIcon(true);
             }
@@ -144,5 +148,11 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
             }
         }
 
+
+
     }
+
+
+
+
 }

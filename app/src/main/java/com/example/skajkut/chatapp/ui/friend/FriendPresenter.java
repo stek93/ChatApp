@@ -2,9 +2,13 @@ package com.example.skajkut.chatapp.ui.friend;
 
 import com.example.skajkut.chatapp.data.model.User;
 import com.example.skajkut.chatapp.data.remote.DataSource;
-import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +31,7 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
         currentUser.setId(remoteDataSource.getCurrentUserID());
 
     }
+
 
     public void getFriends() {
         if (view == null){
@@ -118,6 +123,48 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
 
         return usersMap;
 
+    }
+
+    @Override
+    public void favoriteFriendsListener(){
+        if (view==null){
+            return;
+        }
+
+        view.setProgressBar(true);
+        String id = remoteDataSource.getCurrentUserID();
+
+        remoteDataSource.getFavoriteList(id, new DataSource.GetFavoriteListCallback() {
+            @Override
+            public void onSuccess(List<User> users) {
+                if (view!=null){
+                    view.setProgressBar(false);
+
+                }
+            }
+
+            @Override
+            public void onEmptyList() {
+                view.setProgressBar(false);
+                view.showFavoriteFriends(null);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                if (view != null){
+                    view.setProgressBar(false);
+                    view.showToastMessage("Something went wrong!");
+                }
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
+            }
+        });
     }
 
 }

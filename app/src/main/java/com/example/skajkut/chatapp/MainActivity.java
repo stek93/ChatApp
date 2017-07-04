@@ -1,8 +1,7 @@
 package com.example.skajkut.chatapp;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -19,15 +18,24 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
+import com.example.skajkut.chatapp.ui.conversation.ChatActivity;
 import com.example.skajkut.chatapp.ui.conversations.ConversationFragment;
 import com.example.skajkut.chatapp.ui.friend.FriendsFragment;
+import com.example.skajkut.chatapp.ui.login.LoginActivity;
 import com.example.skajkut.chatapp.ui.users.UsersFragment;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+
+    private RemoteDataSource remoteDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        remoteDataSource = RemoteDataSource.getInstance();
 
     }
 
@@ -70,7 +80,27 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_signout){
+//            signOut();
+            startActivity(new Intent(MainActivity.this, ChatActivity.class));
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut(){
+        FirebaseUser user = remoteDataSource.getCurrentUser();
+        for (UserInfo userInfo : user.getProviderData()){
+            if(userInfo.getProviderId().equals("facebook.com")){
+                LoginManager.getInstance().logOut();
+                startActivity(new Intent(this, LoginActivity.class));
+            }else{
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+            }
+        }
+
     }
 
     public static class PlaceholderFragment extends Fragment {
