@@ -60,7 +60,7 @@ public class ConversationFragment extends BaseView implements ConversationsContr
         mRecyclerView.setLayoutManager(mConversationsLayoutManager);
 
 
-        //mPresenter.getConversations();
+        mPresenter.getConversations();
 
 
         return view;

@@ -12,7 +12,7 @@ import java.util.List;
  * For more information contact me on stefan.kajkutsf@gmail.com .
  */
 
-/*
+
 public class UsersPresenter extends BasePresenter<UsersContract.View>
         implements UsersContract.Presenter {
 
@@ -22,31 +22,49 @@ public class UsersPresenter extends BasePresenter<UsersContract.View>
                           UsersContract.View view) {
         super();
         this.remoteDataSource = remoteDataSource;
+        this.view = view;
     }
 
     @Override
-    public void getUsersByParams(String... params) {
-        remoteDataSource.searchUsers(new DataSource.SearchUsersCallback() {
+    public void getUsersByParams(String searchValue, String searchQuery) {
+
+        if(view == null) {
+            return;
+        }
+
+        remoteDataSource.searchUsers(searchValue, searchQuery,
+                new DataSource.SearchUsersCallback() {
             @Override
             public void onSuccess(List<User> users) {
-                System.out.println();
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.onSearchResults(users);
+                }
             }
 
             @Override
             public void onEmptyList() {
-
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.onSearchResults(null);
+                }
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showToastMessage("Something went wrong!");
+                }
             }
 
             @Override
             public void onNetworkFailure() {
-
+                if(view != null) {
+                    view.setProgressBar(false);
+                    view.showNetworkFailureMessage(true);
+                }
             }
-        }, params);
+        });
     }
 }
-*/

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="users_filter_choice">
+		<item>firstname</item>
+		<item>lastname</item>
+		<item>email</item>
+		<item>username</item>
+	</string-array>
+</resources>
