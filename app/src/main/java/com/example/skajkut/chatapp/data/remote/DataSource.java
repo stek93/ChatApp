@@ -24,7 +24,6 @@ public abstract class DataSource {
     public abstract void createUserFromProvider(String firstname, String lastname, String email, AddUserFromProviderCallback callback);
     public abstract void searchUsers(String searchValue, String searchQuery,
                                      SearchUsersCallback callback);
-    public abstract void getCurrentLoggedUser(GetCurrentLoggedUserCallback callback);
 
     public interface GetEntityCallback<T> {
         void onSuccess(T classType);
@@ -95,10 +94,4 @@ public abstract class DataSource {
 
      }
 
-     public interface GetCurrentLoggedUserCallback extends GetEntityCallback<User> {
-
-         @Override
-         void onSuccess(User user);
-
-     }
 }

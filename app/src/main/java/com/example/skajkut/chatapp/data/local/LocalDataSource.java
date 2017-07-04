@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.skajkut.chatapp.data.model.User;
+import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.google.firebase.auth.FirebaseUser;
 
 /**

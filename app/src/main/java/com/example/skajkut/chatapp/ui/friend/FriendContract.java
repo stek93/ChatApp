@@ -17,7 +17,7 @@ public interface FriendContract {
 
     interface View extends IBaseView {
 
-        void showFriendList(List<User> users);
+        void showFriendList(List<User> users, User currentUser);
 
         void showFavoriteFriends(List<User> users);
 
@@ -34,7 +34,6 @@ public interface FriendContract {
         void getFriends();
 
         void getFavoriteFreinds();
-
 
     }
 

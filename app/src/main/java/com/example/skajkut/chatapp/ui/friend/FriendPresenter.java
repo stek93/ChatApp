@@ -6,7 +6,9 @@ import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BasePresenter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by internship007 on 6/30/17.
@@ -15,11 +17,15 @@ import java.util.List;
 public class FriendPresenter  extends BasePresenter<FriendContract.View> implements FriendContract.Presenter{
 
     private RemoteDataSource remoteDataSource;
+    private User currentUser;
 
     public FriendPresenter(RemoteDataSource remoteDataSource,
                            FriendContract.View view) {
         this.remoteDataSource = remoteDataSource;
         this.view = view;
+        currentUser = new User();
+        currentUser.setId(remoteDataSource.getCurrentUserID());
+
     }
 
     public void getFriends() {
@@ -35,7 +41,8 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             public void onSuccess(List<User> users) {
                 if(view != null){
                     view.setProgressBar(false);
-                    view.showFriendList(users);
+                    currentUser.setFriendList(convertListToMap(users));
+                    view.showFriendList(users, currentUser);
 
                 }
             }
@@ -74,7 +81,9 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
             public void onSuccess(List<User> users) {
                 if (view!=null){
                     view.setProgressBar(false);
+                    currentUser.setFavoriteList(convertListToMap(users));
                     view.showFavoriteFriends(users);
+
                 }
             }
 
@@ -100,9 +109,15 @@ public class FriendPresenter  extends BasePresenter<FriendContract.View> impleme
                 }
             }
         });
+
     }
 
+    private Map<String, User> convertListToMap(List<User> users) {
+        Map<String, User> usersMap = new HashMap<String, User>();
+        for (User u : users) usersMap.put(u.getId(), u);
 
+        return usersMap;
 
+    }
 
 }

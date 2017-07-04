@@ -24,8 +24,8 @@ public class User {
     private String photo;
 
     private List<Conversation> conversationList;
-    private Map<String, String> friendList;
-    private Map<String, String> favoriteList;
+    private Map<String, User> friendList;
+    private Map<String, User> favoriteList;
 
     public User() {
         super();
@@ -45,6 +45,7 @@ public class User {
     }
 
     public User(String id, String firstname, String lastname, String email) {
+        super();
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -52,6 +53,7 @@ public class User {
     }
 
     public User(String firstname, String lastname, String username, String password, String email) {
+        super();
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
@@ -60,6 +62,7 @@ public class User {
     }
 
     public User(String firstname, String lastname, String email) {
+        super();
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
@@ -77,12 +80,12 @@ public class User {
     }
 
     @Exclude
-    public Map<String, String> getFriendList() {
+    public Map<String, User> getFriendList() {
         return this.friendList;
     }
 
     @Exclude
-    public void setFriendList(Map<String, String> friendList) {
+    public void setFriendList(Map<String, User> friendList) {
         this.friendList = friendList;
     }
 
@@ -145,12 +148,12 @@ public class User {
     }
 
     @Exclude
-    public Map<String, String> getFavoriteList() {
+    public Map<String, User> getFavoriteList() {
         return this.favoriteList;
     }
 
     @Exclude
-    public void setFavoriteList(Map<String, String> favoriteList) {
+    public void setFavoriteList(Map<String, User> favoriteList) {
         this.favoriteList = favoriteList;
     }
 

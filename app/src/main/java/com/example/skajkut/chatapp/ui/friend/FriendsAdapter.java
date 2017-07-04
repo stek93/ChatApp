@@ -22,21 +22,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by n.sofronovic on 6/22/2017.
  */
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
+public class
+FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
 
     private Context mContext;
     private List<User> users = new ArrayList<>();
     private List<User> favoriteFriends = new ArrayList<>();
+    private User currentUser;
 
-
-    public FriendsAdapter(Context mContext, List<User> users) {
+    public FriendsAdapter(Context mContext, List<User> users, User currentUser) {
         this.mContext = mContext;
         this.users = users;
+        this.currentUser = currentUser;
     }
 
     @Override
@@ -48,27 +51,20 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(FriendsAdapter.ViewHolder holder, int position) {
-        /*
 
-        User x = RemoteDataSource.getInstance().getCurrentUser();
-
-         */
         User user = users.get(position);
         holder.emailTextView.setText(user.getUsername());
         holder.fullnameTextView.setText(user.getFirstname() + " " + user.getLastname());
         if (user.getPhoto()!=null) {
             Picasso.with(mContext).load(user.getPhoto()).into(holder.userImageView);
         }
-        for(User u : favoriteFriends){
-/*
-            if(x.getFavouriteFriends().get(u.getId()) != mill)
-*/
-            if (u.getEmail().equals(user.getEmail())){
-                Picasso.with(mContext).load(R.drawable.favfullstar);
-            }else{
-                Picasso.with(mContext).load(R.drawable.emptystar);
-            }
+
+        if(currentUser.getFavoriteList().get(user.getId()) != null) {
+            Picasso.with(mContext).load(R.drawable.favfullstar).into(holder.favoriteIcon);
+        } else {
+            Picasso.with(mContext).load(R.drawable.emptystar).into(holder.favoriteIcon);
         }
+
     }
 
     @Override
@@ -111,23 +107,41 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
             if (view.getId() == favoriteIcon.getId()){
                 int position = getAdapterPosition();
                 User user = this.users.get(position);
-                String id = user.getId();
-                String username = user.getUsername();
-                addToFavorites(id, username);
+
+                addToFavorites(user);
             }
         }
 
 
-        private void addToFavorites(String id, String username){
-            mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
-            mUser = FirebaseAuth.getInstance().getCurrentUser();
-            mDatabaseReference.child(mUser.getUid()).child(id).setValue(username);
-            changeFavoriteIcon();
+        private void addToFavorites(User user){
+
+            if (currentUser.getFavoriteList().get(user.getId()) != null){
+                mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
+                mUser = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabaseReference.child(mUser.getUid()).child(user.getId()).removeValue();
+                System.out.println(currentUser);
+                currentUser.getFavoriteList().remove(user.getId());
+                System.out.println(currentUser);
+
+                changeFavoriteIcon(false);
+
+            }else {
+                mDatabaseReference = mFirebaseDatabase.getReference("favoritefriends");
+                mUser = FirebaseAuth.getInstance().getCurrentUser();
+                mDatabaseReference.child(mUser.getUid()).child(user.getId()).setValue(user.getUsername());
+                System.out.println(currentUser);
+
+                changeFavoriteIcon(true);
+            }
 
         }
 
-        private void changeFavoriteIcon(){
-            Picasso.with(mContext).load(R.drawable.favfullstar).into(favoriteIcon);
+        private void changeFavoriteIcon(boolean setImage){
+            if (setImage) {
+                Picasso.with(mContext).load(R.drawable.favfullstar).into(favoriteIcon);
+            }else{
+                Picasso.with(mContext).load(R.drawable.emptystar).into(favoriteIcon);
+            }
         }
 
     }

@@ -15,8 +15,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,6 +40,9 @@ public class RemoteDataSource extends DataSource {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+
+    final User[] currentUser = {new User()};
+    final Integer[] counter = {0,0,0};
 
     private RemoteDataSource() {
         super();
@@ -142,6 +147,7 @@ public class RemoteDataSource extends DataSource {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
                                     User u = snap.getValue(User.class);
+                                    u.setId(snap.getKey());
                                     userList.add(u);
                                 }
                                 callback.onSuccess(userList);
@@ -203,6 +209,7 @@ public class RemoteDataSource extends DataSource {
                                 for (DataSnapshot snap : dataSnapshot.getChildren()) {
 
                                     User u = snap.getValue(User.class);
+                                    u.setId(snap.getKey());
                                     userList.add(u);
                                 }
                                 callback.onSuccess(userList);
@@ -232,6 +239,7 @@ public class RemoteDataSource extends DataSource {
                 }
             });
         }
+
     }
 
     // TODO
@@ -254,6 +262,7 @@ public class RemoteDataSource extends DataSource {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                user.setId(dataSnapshot.getKey());
                 callback.onSuccess(user);
             }
 
@@ -375,14 +384,83 @@ public class RemoteDataSource extends DataSource {
         callback.onSuccess(user);
     }
 
-    @Override
-    public void getCurrentLoggedUser(GetCurrentLoggedUserCallback callback) {
+    /*@Override
+    public void getCurrentLoggedUser(final GetCurrentLoggedUserCallback callback) {
         String uID = getCurrentUserID();
 
-        User user = null;
+        getFavoriteList(uID, new GetFavoriteListCallback() {
+            @Override
+            public void onSuccess(List<User> users) {
+                currentUser[0].setFavoriteList(convertListToMap(users));
+                counter[1]++;
+                Log.d("TAG", "getFavoriteList - onSuccess: counter++ " + users.size());
+                checkAllConditions(counter[0], callback);
 
-        // loadovati friendlistu, favourite listu
-        // provjeravati da li se neko nalazi u listi tako sto pristupamo mapi
+            }
+
+            @Override
+            public void onEmptyList() {
+                counter[1]++;
+                Log.d("TAG", "getFavoriteList - onEmptyList: counter++");
+                checkAllConditions(counter[0], callback);
+
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                counter[1]++;
+                Log.d("TAG", "getFavoriteList - onFailure: counter++");
+                checkAllConditions(counter[0], callback);
+
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                counter[0]++;
+                Log.d("TAG", "getFavoriteList - onNetworkFailure: counter++");
+                checkAllConditions(counter[0], callback);
+            }
+
+        });
+
+        getFriendList(uID, new GetFriendListCallback() {
+            @Override
+            public void onSuccess(List<User> users) {
+                currentUser[0].setFriendList(convertListToMap(users));
+                counter[2]++;
+                Log.d("TAG", "getFriendList - onSuccess: counter++ " + users.size());
+                checkAllConditions(counter[0], callback);
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+                counter[2]++;
+                Log.d("TAG", "getFriendList - onFailure: counter++");
+                checkAllConditions(counter[0], callback);
+            }
+
+            @Override
+            public void onNetworkFailure() {
+                counter[2]++;
+                Log.d("TAG", "getFriendList - onNetworkFailure: counter++");
+                checkAllConditions(counter[0], callback);
+            }
+        });
+
     }
+
+    private Map<String, User> convertListToMap(List<User> users) {
+        Map<String, User> usersMap = new HashMap<String, User>();
+        for (User u : users) usersMap.put(u.getId(), u);
+
+        return usersMap;
+    }
+
+    private void checkAllConditions(Integer i, GetCurrentLoggedUserCallback callback){
+        if(counter[0] > 0 && counter[1] > 0 && counter[2] > 0) {
+            counter[0] = 0; counter[1] = 0; counter[2] = 0;
+            callback.onSuccess(currentUser[0]);
+        }
+    }*/
 
 }

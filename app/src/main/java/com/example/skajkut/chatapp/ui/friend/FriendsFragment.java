@@ -3,29 +3,19 @@ package com.example.skajkut.chatapp.ui.friend;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.skajkut.chatapp.R;
 import com.example.skajkut.chatapp.data.model.User;
-import com.example.skajkut.chatapp.data.remote.FirebaseUserService;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
-import com.example.skajkut.chatapp.ui.login.LoginContract;
 import com.example.skajkut.chatapp.util.mvp.BaseView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +80,8 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
         return view;
     }
 
+
+
     private void getFavoriteFriends(){
         presenter.getFavoriteFreinds();
 
@@ -100,8 +92,8 @@ public class FriendsFragment extends BaseView implements FriendContract.View {
     }
 
     @Override
-    public void showFriendList(List<User> users) {
-        mFriendsAdapter = new FriendsAdapter(getActivity(), users);
+    public void showFriendList(List<User> users, User currentUser) {
+        mFriendsAdapter = new FriendsAdapter(getActivity(), users, currentUser);
         mRecyclerView.setAdapter(mFriendsAdapter);
     }
 

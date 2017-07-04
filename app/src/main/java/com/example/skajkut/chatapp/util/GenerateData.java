@@ -90,7 +90,7 @@ public final class GenerateData {
         //String user2ID = mDatabase.push().getKey();
         //String user3ID = mDatabase.push().getKey();
 
-        user2.getFriendList().put(user1.getId(), user1.getUsername());
+        /*user2.getFriendList().put(user1.getId(), user1.getUsername());
         user2.getFriendList().put(user3.getId(), user3.getUsername());
 
         for(Map.Entry<String, String> user : user2.getFriendList().entrySet()) {
@@ -100,7 +100,7 @@ public final class GenerateData {
 
         for(Map.Entry<String, String> user : user2.getFavoriteList().entrySet()) {
             mDatabase.child("favoritefriends").child("XLIm1VcF6ocjdCAR30OLwtHOXm73").child(user.getKey()).setValue(user.getValue());
-        }
+        }*/
 
 
 /*
