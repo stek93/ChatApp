@@ -553,18 +553,41 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void createConversationForUser(Conversation c) {
+    public void createConversationForUser(final Conversation c) {
 
         List<String> list = new ArrayList<>();
 
         String uID = getCurrentUserID();
 
-        databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
+        /*databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
         for(Map.Entry<String, String> users : c.getUsers().entrySet()) {
             String userId = users.getKey();
             list.add(c.getId());
 
             databaseReference.child(userId).setValue(list);
+        }*/
+        databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
+        for(Map.Entry<String, String> users : c.getUsers().entrySet()){
+            final String userID = users.getKey();
+
+            databaseReference.child(userID).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    List<String> conversationsIDs = new ArrayList<>();
+                    String uid = userID;
+                    conversationsIDs.add(c.getId());
+                    for(DataSnapshot snap : dataSnapshot.getChildren()) {
+                        conversationsIDs.add(snap.getValue().toString());
+                    }
+                    DatabaseReference databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
+                    databaseReference.child(uid).setValue(conversationsIDs);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 }
