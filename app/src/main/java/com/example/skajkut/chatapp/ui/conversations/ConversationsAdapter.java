@@ -55,6 +55,12 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
         return mConversations.size();
     }
 
+    public void setData(List<Conversation> conversations){
+        mConversations.clear();
+        mConversations.addAll(conversations);
+        notifyDataSetChanged();
+    }
+
     class ConversationViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
 

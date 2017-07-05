@@ -67,7 +67,6 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
 
             private void getConversations(final List<String> conversations) {
 
-                final List<Conversation> conversationList = new ArrayList<Conversation>();
 
                 if(conversations.size() <= 0) {
                     view.showConversationsList(null);
@@ -77,6 +76,8 @@ public class ConversationPresenter extends BasePresenter<ConversationsContract.V
                 final String lastConversationId = conversations.get(conversations.size() - 1);
                 for(final String conversationID : conversations) {
                     remoteDataSource.getConversation(conversationID, new DataSource.GetConversationCallback() {
+                        final List<Conversation> conversationList = new ArrayList<Conversation>();
+
                         @Override
                         public void onSuccess(Conversation conversation) {
                             conversationList.add(conversation);

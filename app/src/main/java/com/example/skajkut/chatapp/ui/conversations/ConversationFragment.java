@@ -15,6 +15,7 @@ import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BaseView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,7 +59,8 @@ public class ConversationFragment extends BaseView implements ConversationsContr
 
         mConversationsLayoutManager = new LinearLayoutManager(getPermission());
         mRecyclerView.setLayoutManager(mConversationsLayoutManager);
-
+        mConversationsAdapter = new ConversationsAdapter(getPermission(), new ArrayList<Conversation>());
+        mRecyclerView.setAdapter(mConversationsAdapter);
 
         mPresenter.getConversations();
 
@@ -73,12 +75,11 @@ public class ConversationFragment extends BaseView implements ConversationsContr
 
     @Override
     public void showConversationsList(List<Conversation> conversations) {
-        /*if(conversations != null && conversations.size() > 0) {
-            mConversationsAdapter = new ConversationsAdapter(getPermission(), conversations);
-            mRecyclerView.setAdapter(mConversationsAdapter);
+        if(conversations != null && conversations.size() > 0) {
+            mConversationsAdapter.setData(conversations);
         } else {
             mNoConversationsTextView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-        }*/
+        }
     }
 }

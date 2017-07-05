@@ -40,7 +40,6 @@ public class FavoriteFriendsAdapter extends RecyclerView.Adapter<FavoriteFriends
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = favoriteFriends.get(position);
         //TODO Dodati korisniku sliku
-//      holder.userImage.setImageBitmap(user.getPhoto());
         if(user.getUsername()!=null){
             holder.username.setText(user.getUsername());
         }else{

@@ -28,21 +28,12 @@
             android:layout_marginBottom="8dp">
 
             <ImageView
-                android:id="@+id/img_message_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/shape_small_circle"
-                tools:layout_editor_absoluteX="4dp"
-                tools:layout_editor_absoluteY="3dp"
-                android:layout_marginLeft="55dp"
-                android:visibility="visible"/>
-
-            <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:id="@+id/img_profile_image"
                 tools:src="@mipmap/ic_launcher"
                 android:scaleType="center"/>
+
         </android.support.v7.widget.CardView>
 
         <TextView

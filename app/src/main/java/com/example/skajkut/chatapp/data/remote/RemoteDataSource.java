@@ -73,11 +73,12 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getConversationList(String userID, final GetConversationListCallback callback) {
-        final List<String> conversationList = new ArrayList<>();
+
         databaseReference = firebaseDatabase.getReference()
                 .child(CONVERSATION_LIST)
                 .child(userID);
         databaseReference.addValueEventListener(new ValueEventListener() {
+            final List<String> conversationList = new ArrayList<>();
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -189,13 +190,13 @@ public class RemoteDataSource extends DataSource {
 
     @Override
     public void getFavoriteList(String userID, final GetFavoriteListCallback callback) {
-        final List<User> userList = new ArrayList<>();
         databaseReference = firebaseDatabase.getReference(FAVORITE_FRIENDS).child(userID);
         if (databaseReference!=null) {
             databaseReference.keepSynced(true);
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    final List<User> userList = new ArrayList<>();
                     if (dataSnapshot.getChildrenCount()==0){
                         callback.onEmptyList();
                         return;
@@ -555,16 +556,15 @@ public class RemoteDataSource extends DataSource {
     public void createConversationForUser(Conversation c) {
 
         List<String> list = new ArrayList<>();
-        list.add(c.getId());
 
-
+        String uID = getCurrentUserID();
 
         databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
-        for(Map.Entry<String, String> users : c.getUsers().entrySet()){
+        for(Map.Entry<String, String> users : c.getUsers().entrySet()) {
             String userId = users.getKey();
+            list.add(c.getId());
 
-            databaseReference.child(userId).setValue(c.getId());
+            databaseReference.child(userId).setValue(list);
         }
-
     }
 }
