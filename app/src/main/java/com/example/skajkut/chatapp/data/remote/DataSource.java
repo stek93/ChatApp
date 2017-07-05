@@ -29,8 +29,10 @@ public abstract class DataSource {
                                      SearchUsersCallback callback);
     public abstract void addFavorite(User user, AddFavoriteCallback callback);
     public abstract void  removeFavorite(User user, RemoveFavoriteCallback callback);
-    public abstract void getMessages(GetMessagesCallback callback);
-    public abstract void sendMessage(String message, SendMessageCallback callback);
+    public abstract void getMessages(Conversation conversation, GetMessagesCallback callback);
+    public abstract void sendMessage(String message, Conversation conversation, SendMessageCallback callback);
+    public abstract void createConversation(Conversation c, CreateConversationCallback callback);
+    public abstract void createConversationForUser(Conversation c);
 
     public interface GetEntityCallback<T> {
         void onSuccess(T classType);
@@ -124,5 +126,12 @@ public abstract class DataSource {
          @Override
          void onSuccess(Message message);
      }
+
+     public interface CreateConversationCallback extends GetEntityCallback<Conversation>{
+
+         @Override
+         void onSuccess(Conversation conversation);
+     }
+
 
 }

@@ -14,6 +14,7 @@ import com.example.skajkut.chatapp.util.DateTimeFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -86,12 +87,22 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationsAdap
             mConversation = conversation;
             //TODO load slike;
             // mCOnversationImageView
-            mMessageTitleTextView.setText(mConversation.getTitle());
-            mLastMessageTextView.setText(mConversation.getLastMessage().getText());
-            mMessageTimeTextView
-                    .setText(DateTimeFormatter.dateTimeFormatter(mConversation
-                    .getLastMessage()
-                    .getDateTime()));
+
+            if (mConversation.getTitle()!= null) {
+                mMessageTitleTextView.setText(mConversation.getTitle());
+            } else {
+                mMessageTitleTextView.setText("New conversation");
+            }
+            if(mConversation.getLastMessage() != null) {
+                mLastMessageTextView.setText(mConversation.getLastMessage().getText());
+                mMessageTimeTextView
+                        .setText(DateTimeFormatter.dateTimeFormatter(mConversation
+                                .getLastMessage()
+                                .getDateTime()));
+            } else {
+                mLastMessageTextView.setText("Start conversation");
+                mMessageTimeTextView.setText(DateTimeFormatter.dateTimeFormatter(new Date()));
+            }
         }
 
     }

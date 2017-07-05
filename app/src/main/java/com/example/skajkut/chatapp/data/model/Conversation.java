@@ -1,7 +1,10 @@
 package com.example.skajkut.chatapp.data.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.firebase.database.Exclude;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +18,13 @@ import java.util.Map;
 public class Conversation {
 
     private String id;
+
     private String title;
-    private Map<String, User> users;
+    private Map<String, String> users;
+
     private List<Message> messageList;
+
+    @Exclude
     private Message lastMessage;
 
     public Conversation() {
@@ -26,7 +33,7 @@ public class Conversation {
         this.messageList = new ArrayList<>();
     }
 
-    public Conversation(Map<String, User> users, List<Message> messages, String title) {
+    public Conversation(Map<String, String> users, List<Message> messages, String title) {
         super();
         this.users = users;
         this.messageList = messages;
@@ -42,12 +49,12 @@ public class Conversation {
     }
 
     @Exclude
-    public Map<String, User> getUsers() {
+    public Map<String, String> getUsers() {
         return this.users;
     }
 
     @Exclude
-    public void setUsers(Map<String, User> users) {
+    public void setUsers(Map<String, String> users) {
         this.users = users;
     }
 

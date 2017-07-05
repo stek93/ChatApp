@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.skajkut.chatapp.R;
+import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.Message;
 import com.example.skajkut.chatapp.data.remote.RemoteDataSource;
 import com.example.skajkut.chatapp.util.mvp.BaseView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +38,8 @@ public class ChatFragment extends BaseView implements ChatContract.View {
     private ChatContract.Presenter presenter;
 
     String recieverID;
+
+    Conversation mConversation;
 
     @BindView(R.id.rw_conversation_messages)
     RecyclerView messagesRecylerView;
@@ -67,9 +71,12 @@ public class ChatFragment extends BaseView implements ChatContract.View {
         mMessagesLayoutManager = new LinearLayoutManager(getPermission());
         messagesRecylerView.setLayoutManager(mMessagesLayoutManager);
 
+        mMessagesAdapter = new MessagesAdapter(getPermission(), new ArrayList<Message>());
+        messagesRecylerView.setAdapter(mMessagesAdapter);
+
         recieverID = getActivity().getIntent().getStringExtra("reciever_id");
 
-        presenter.getMessages();
+        presenter.createConversation(recieverID);
 
         return view;
     }
@@ -77,13 +84,20 @@ public class ChatFragment extends BaseView implements ChatContract.View {
     @OnClick(R.id.iv_send_message)
     public void sendMessage(){
         String message = messageEditText.getText().toString();
-        presenter.sendNewMessage(message, recieverID);
+        presenter.sendNewMessage(message, mConversation);
     }
 
     @Override
     public void showMessages(List<Message> messages) {
-        mMessagesAdapter = new MessagesAdapter(getPermission(), messages);
-        messagesRecylerView.setAdapter(mMessagesAdapter);
+        mMessagesAdapter.setData(messages);
+    }
+
+    @Override
+    public void onConversationCreated(Conversation conversation) {
+        mConversation = conversation;
+        // display conversation data ...
+
+        presenter.getMessages(conversation);
     }
 
     @Override

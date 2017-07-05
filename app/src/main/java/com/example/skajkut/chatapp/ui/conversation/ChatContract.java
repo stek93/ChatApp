@@ -1,5 +1,6 @@
 package com.example.skajkut.chatapp.ui.conversation;
 
+import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.Message;
 import com.example.skajkut.chatapp.util.mvp.IBasePresenter;
 import com.example.skajkut.chatapp.util.mvp.IBaseView;
@@ -16,12 +17,15 @@ public interface ChatContract {
 
         void showMessages(List<Message> messages);
 
+        void onConversationCreated(Conversation conversation);
     }
 
     interface Presenter extends IBasePresenter<View>{
 
-        void getMessages();
+        void getMessages(Conversation conversation);
 
-        void sendNewMessage(String message, String recieverID);
+        void sendNewMessage(String message, Conversation conversation);
+
+        void createConversation(String recieverID);
     }
 }

@@ -73,12 +73,12 @@ public class ConversationFragment extends BaseView implements ConversationsContr
 
     @Override
     public void showConversationsList(List<Conversation> conversations) {
-        if(conversations != null && conversations.size() > 0) {
+        /*if(conversations != null && conversations.size() > 0) {
             mConversationsAdapter = new ConversationsAdapter(getPermission(), conversations);
             mRecyclerView.setAdapter(mConversationsAdapter);
         } else {
             mNoConversationsTextView.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
-        }
+        }*/
     }
 }

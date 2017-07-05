@@ -41,12 +41,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position) {
         Message message = messageList.get(position);
         holder.message.setText(message.getText());
-        holder.message.setText(message.getSender());
+        holder.sender.setText(message.getSender());
     }
 
     @Override
     public int getItemCount() {
         return messageList.size();
+    }
+
+    public void setData(List<Message> messages) {
+        messageList.clear();
+        messageList.addAll(messages);
+        notifyDataSetChanged();
     }
 
 

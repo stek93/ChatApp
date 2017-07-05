@@ -19,7 +19,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +76,11 @@ public class FriendsFragment extends BaseView implements FriendContract.View{
                 LinearLayoutManager.HORIZONTAL, false);
         mFavRecyclerView.setLayoutManager(mFavoritesLayoutManager);
 
+
+
+        mFavoritesAdapter = new FavoriteFriendsAdapter(getActivity(), favoriteFriends);
+        mFavRecyclerView.setAdapter(mFavoritesAdapter);
+
         getFriendList();
         getFavoriteFriends();
 
@@ -102,13 +109,20 @@ public class FriendsFragment extends BaseView implements FriendContract.View{
     @Override
     public void showFavoriteFriends(List<User> users) {
         if(users!=null && users.size() > 0)  {
-            mFavoritesAdapter = new FavoriteFriendsAdapter(getActivity(), users);
-            mFavRecyclerView.setAdapter(mFavoritesAdapter);
+//            mFavoritesAdapter = new FavoriteFriendsAdapter(getActivity(), users);
+//            mFavRecyclerView.setAdapter(mFavoritesAdapter);
+            Set<User> userSet = new HashSet<>(users);
+
+            mFavoritesAdapter.getFavoriteFriends().clear();
+            mFavoritesAdapter.getFavoriteFriends().addAll(users);
+            mFavoritesAdapter.notifyDataSetChanged();
+
         }else {
             noFavoritesTextView.setVisibility(View.VISIBLE);
             mFavRecyclerView.setVisibility(View.GONE);
         }
         mFavoritesAdapter.notifyDataSetChanged();
+
 
     }
 

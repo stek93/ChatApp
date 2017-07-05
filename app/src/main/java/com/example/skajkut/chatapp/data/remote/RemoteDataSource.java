@@ -1,8 +1,6 @@
 package com.example.skajkut.chatapp.data.remote;
 
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.skajkut.chatapp.data.model.Conversation;
 import com.example.skajkut.chatapp.data.model.Message;
@@ -17,10 +15,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -491,43 +486,85 @@ public class RemoteDataSource extends DataSource {
     }
 
     @Override
-    public void getMessages(GetMessagesCallback callback) {
-        List<Message> messages = new ArrayList<>();
+    public void getMessages(Conversation conversation, final GetMessagesCallback callback) {
+        databaseReference = firebaseDatabase.getReference(CONVERSATIONS).child(conversation.getId()).child(MESSAGES);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<Message> messages = new ArrayList<>();
+                for (DataSnapshot i : dataSnapshot.getChildren()){
+                    Message m = i.getValue(Message.class);
+                    messages.add(m);
+                }
+                callback.onSuccess(messages);
+            }
 
-        databaseReference = firebaseDatabase.getReference(CONVERSATIONS)
-                .child("key"); //todo fixme please
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
-    public void sendMessage(String message, SendMessageCallback callback) {
-        List<Message> messages = new ArrayList<>();
+    public void sendMessage(String message, Conversation conversation, SendMessageCallback callback) {
 
         String uID = getCurrentUserID();
 
         FirebaseUser user = getCurrentUser();
 
         Date date = new Date();
-        Calendar calendar = GregorianCalendar.getInstance();
-        calendar.setTime(date);
-        calendar.get(Calendar.HOUR);
 
         Message m = new Message();
         m.setSender(user.getDisplayName());
         m.setText(message);
         m.setDateTime(date);
-        messages.add(m);
+
+        /*if (conversation.getMessageList() == null) {
+            conversation.setMessageList(new ArrayList<Message>());
+        }*/
+
+        conversation.getMessageList().add(m);
 
         databaseReference = firebaseDatabase.getReference(CONVERSATIONS);
-        String cID = databaseReference.push().getKey();
+        databaseReference.child(conversation.getId()).child(MESSAGES).setValue(conversation.getMessageList());
+       /* databaseReference.child(cID).child(LASTMESSAGE).setValue(c.getLastMessage());
+        databaseReference.child(cID).child(USERS).setValue(c.getUsers());*/
 
-        Conversation c = new Conversation();
-        c.setTitle("Title");
-        c.setId(cID);
-        c.setLastMessage(m);
-        c.setMessageList(messages);
+    }
 
-        databaseReference.child(cID).setValue(c);
-        databaseReference.child(cID).child(LASTMESSAGE).setValue(c.getLastMessage());
-        databaseReference.child(cID).child(USERS).setValue(c.getUsers());
+    @Override
+    public void createConversation(Conversation c, CreateConversationCallback callback) {
+
+        databaseReference = firebaseDatabase.getReference(CONVERSATIONS);
+        String id = databaseReference.push().getKey();
+        c.setId(id);
+
+        Message m2 = new Message();
+        m2.getDateTime();
+        m2.setText("Hello from user2");
+        m2.setSender("Levi Test");
+
+        databaseReference.child(id).setValue(c);
+        databaseReference.child(id).child(USERS).setValue(c.getUsers());
+        databaseReference.child(id).child(LASTMESSAGE).setValue(m2);
+        callback.onSuccess(c);
+    }
+
+    @Override
+    public void createConversationForUser(Conversation c) {
+
+        List<String> list = new ArrayList<>();
+        list.add(c.getId());
+
+
+
+        databaseReference = firebaseDatabase.getReference(CONVERSATION_LIST);
+        for(Map.Entry<String, String> users : c.getUsers().entrySet()){
+            String userId = users.getKey();
+
+            databaseReference.child(userId).setValue(c.getId());
+        }
+
     }
 }

@@ -73,8 +73,10 @@ public final class GenerateData {
         Message m2 = new Message();
         m2.getDateTime();
         m2.setText("Hello from user2");
-        //m2.getUsers().put(user2.getId(), user2.getUsername());
-        m2.setSender(user2.getFirstname() + " " + user2.getLastname());
+        m2.setSender("Levi Test");
+        mDatabase.child("conversations").child(c1.getId()).child("lastMessage").setValue(m2);
+
+
 
         c1.getMessageList().add(m1);
         c1.getMessageList().add(m2);

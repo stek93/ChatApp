@@ -112,7 +112,7 @@ FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
             }else if(view.getId() == userImageView.getId()){
 
                 Intent i = new Intent(mContext, ChatActivity.class);
-                i.putExtra("reciever_id", user.getId());
+                i.putExtra("reciever_id", user.getId() + " " + user.getFirstname());
                 mContext.startActivity(i);
             }
         }

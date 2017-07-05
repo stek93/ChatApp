@@ -20,6 +20,10 @@ public class FavoriteFriendsAdapter extends RecyclerView.Adapter<FavoriteFriends
     private Context mContext;
     private List<User> favoriteFriends = new ArrayList<>();
 
+    public List<User> getFavoriteFriends() {
+        return favoriteFriends;
+    }
+
     public FavoriteFriendsAdapter(Context mContext, List<User> favoriteFriends) {
         this.mContext = mContext;
         this.favoriteFriends = favoriteFriends;
